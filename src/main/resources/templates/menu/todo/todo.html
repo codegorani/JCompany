@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+<div class="col col-md-12">
+    <div class="col col-md-6">
+        <a href="/menu/todo-save" role="button" class="btn btn-primary">Todo 등록</a>
+    <table class="table table-boarder table-horizontal">
+        <thead>
+        <tr>
+            <th>Board Id</th>
+            <th>Board Title</th>
+            <th>Modified Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board: ${boards}">
+            <td th:text="${board.id}"></td>
+            <!-- {id}(id=${board.id})의 형식으로 동적인 url 을 만들어줌-->
+            <td><a th:href="@{/menu/todo/{id}(id=${board.id})}" th:text="${board.title}"></a></td>
+            <td th:text="${board.modifiedDate}"></td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+    <div th:replace="layout/footer" th:remove="tag"></div>
+</body>
+</html>
