@@ -38,6 +38,12 @@ public class Card extends BaseTimeEntity {
         this.board = board;
     }
 
+    public void update(CardType cardType, String title, String content) {
+        this.cardType = cardType;
+        this.title = title;
+        this.content = content;
+    }
+
     public void nextProcess(CardType cardType) {
         this.cardType = cardType;
     }

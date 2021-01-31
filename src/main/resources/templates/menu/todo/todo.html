@@ -12,6 +12,7 @@
             <th>Board Id</th>
             <th>Board Title</th>
             <th>Modified Date</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -20,11 +21,15 @@
             <!-- {id}(id=${board.id})의 형식으로 동적인 url 을 만들어줌-->
             <td><a th:href="@{/menu/todo/{id}(id=${board.id})}" th:text="${board.title}"></a></td>
             <td th:text="${board.modifiedDate}"></td>
+            <td><button type="button" class="btn btn-secondary btn-todo-delete">
+                <input type="hidden" th:value="${board.id}"/>삭제
+            </button></td>
         </tr>
         </tbody>
     </table>
     </div>
 </div>
     <div th:replace="layout/footer" th:remove="tag"></div>
+<script th:src="@{/js/todo/todo.js}"></script>
 </body>
 </html>

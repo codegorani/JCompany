@@ -5,7 +5,9 @@ import com.spring.jcompany.springboot.domain.todo.board.BoardRepository;
 import com.spring.jcompany.springboot.domain.todo.card.Card;
 import com.spring.jcompany.springboot.domain.todo.card.CardRepository;
 import com.spring.jcompany.springboot.domain.todo.card.CardType;
+import com.spring.jcompany.springboot.domain.todo.card.dto.CardResponseDto;
 import com.spring.jcompany.springboot.domain.todo.card.dto.CardSaveRequestDto;
+import com.spring.jcompany.springboot.domain.todo.card.dto.CardUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,5 +42,20 @@ public class CardService {
         } else {
             cardRepository.delete(card);
         }
+    }
+
+    @Transactional
+    public CardResponseDto cardViewService(Long id) {
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Card Not Found"));
+        return new CardResponseDto(card);
+    }
+
+    @Transactional
+    public Long cardUpdateService(Long id, CardUpdateRequestDto requestDto) {
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Card Not Found"));
+        card.update(requestDto.getCardType(), requestDto.getTitle(), requestDto.getContent());
+        return id;
     }
 }

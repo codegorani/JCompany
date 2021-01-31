@@ -5,6 +5,7 @@ import com.spring.jcompany.springboot.domain.todo.board.BoardRepository;
 import com.spring.jcompany.springboot.domain.todo.board.dto.BoardListResponseDto;
 import com.spring.jcompany.springboot.domain.todo.board.dto.BoardResponseDto;
 import com.spring.jcompany.springboot.domain.todo.board.dto.BoardSaveRequestDto;
+import com.spring.jcompany.springboot.domain.todo.board.dto.BoardUpdateRequestDto;
 import com.spring.jcompany.springboot.domain.todo.card.Card;
 import com.spring.jcompany.springboot.domain.todo.card.CardRepository;
 import com.spring.jcompany.springboot.domain.todo.card.dto.CardBoardResponseDto;
@@ -43,5 +44,21 @@ public class BoardService {
     public List<BoardListResponseDto> boardListViewService() {
         return boardRepository.findAllDesc().stream()
                 .map(BoardListResponseDto::new).collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public void boardDeleteService(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Board Not Exist"));
+        boardRepository.delete(board);
+    }
+
+    @Transactional
+    public Long boardUpdateService(Long id, BoardUpdateRequestDto requestDto) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Board Not Exist"));
+        board.update(requestDto.getTitle());
+        return id;
     }
 }
