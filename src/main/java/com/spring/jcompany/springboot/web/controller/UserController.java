@@ -3,6 +3,7 @@ package com.spring.jcompany.springboot.web.controller;
 import com.spring.jcompany.springboot.domain.user.dto.UserSaveRequestDto;
 import com.spring.jcompany.springboot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,5 +50,11 @@ public class UserController {
                 .question(question).answer(answer).picture(filePath).build();
         userService.userSaveService(requestDto);
         return "index";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "admin/admin-menu";
     }
 }
