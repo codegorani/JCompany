@@ -8,9 +8,12 @@ import lombok.Getter;
 public class BoardSaveRequestDto {
     private String title;
     private String author;
-    public BoardSaveRequestDto(String title, String author) {
+    private Long userId;
+
+    public BoardSaveRequestDto(String title, String author, Long userId) {
         this.title = title;
         this.author = author;
+        this.userId = userId;
     }
 
     public Board toEntity() {

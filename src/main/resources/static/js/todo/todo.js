@@ -28,9 +28,12 @@ const todo = {
     },
 
     save: function() {
+        const userId = $('#userId').val();
+
         const data = {
             title: $('#title').val(),
-            author: $('#author').val()
+            author: $('#author').val(),
+            userId: userId
         };
 
         $.ajax({
@@ -40,7 +43,7 @@ const todo = {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function() {
-            window.location.href = '/menu/todo';
+            window.location.href = '/menu/todo-list/' + userId;
         }).fail(function(error) {
             alert(JSON.stringify(error));
         });

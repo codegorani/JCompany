@@ -1,5 +1,7 @@
 package com.spring.jcompany.springboot.web.controller;
 
+import com.spring.jcompany.springboot.config.auth.LoginUser;
+import com.spring.jcompany.springboot.domain.user.dto.SessionUser;
 import com.spring.jcompany.springboot.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,14 +15,17 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping("/menu/todo")
-    public String todoListPage(Model model) {
-        model.addAttribute("boards", boardService.boardListViewService());
+    @GetMapping("/menu/todo-list/{id}")
+    public String todoListPage(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("boards", boardService.boardListViewService(id));
         return "menu/todo/todo";
     }
 
     @GetMapping("/menu/todo-save")
-    public String todoSavePage() {
+    public String todoSavePage(Model model, @LoginUser SessionUser sessionUser) {
+        if(sessionUser != null) {
+            model.addAttribute("loginUser", sessionUser);
+        }
         return "menu/todo/todo-save";
     }
 

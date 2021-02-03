@@ -23,16 +23,18 @@ public class Board extends BaseTimeEntity {
 
     private String author;
 
-    @ManyToOne
-    private User user;
-
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Card> cardList;
 
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
     @Builder
-    public Board(String title, String author) {
+    public Board(String title, String author, User user) {
         this.title = title;
         this.author = author;
+        this.user = user;
     }
 
     public void update(String title) {

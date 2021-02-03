@@ -9,6 +9,8 @@ import com.spring.jcompany.springboot.domain.todo.board.dto.BoardUpdateRequestDt
 import com.spring.jcompany.springboot.domain.todo.card.Card;
 import com.spring.jcompany.springboot.domain.todo.card.CardRepository;
 import com.spring.jcompany.springboot.domain.todo.card.dto.CardBoardResponseDto;
+import com.spring.jcompany.springboot.domain.user.User;
+import com.spring.jcompany.springboot.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +24,18 @@ public class BoardService {
 
     private final CardRepository cardRepository;
     private final BoardRepository boardRepository;
-
+    private final UserRepository userRepository;
 
     @Transactional
     public Long boardSaveService(BoardSaveRequestDto requestDto) {
-        return boardRepository.save(requestDto.toEntity()).getId();
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+
+        Board board = Board.builder()
+                .title(requestDto.getTitle())
+                .author(requestDto.getAuthor())
+                .user(user)
+                .build();
+        return boardRepository.save(board).getId();
     }
 
 
@@ -41,8 +50,9 @@ public class BoardService {
 
 
     @Transactional
-    public List<BoardListResponseDto> boardListViewService() {
-        return boardRepository.findAllDesc().stream()
+    public List<BoardListResponseDto> boardListViewService(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        return boardRepository.findAllDesc(user).stream()
                 .map(BoardListResponseDto::new).collect(Collectors.toList());
     }
 
