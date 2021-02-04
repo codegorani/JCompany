@@ -3,7 +3,6 @@ package com.spring.jcompany.springboot.service.user;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
 import com.spring.jcompany.springboot.domain.user.dto.SessionUser;
-import com.spring.jcompany.springboot.domain.user.dto.UserBasicResponseDto;
 import com.spring.jcompany.springboot.domain.user.dto.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

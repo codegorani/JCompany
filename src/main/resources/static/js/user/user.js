@@ -2,31 +2,31 @@ const user = {
     init: function() {
         const _this = this;
 
-        $('#email').on('blur', function() {
+        $('#email').on('blur', function () {
             _this.emailValidate();
         });
 
-        $('#password').on('keyup', function() {
+        $('#password').on('keyup', function () {
             _this.passwordValidate();
         });
 
-        $('#password-confirm').on('keyup', function() {
+        $('#password-confirm').on('keyup', function () {
             _this.passwordEqual();
         });
 
-        $('#birth-day').on('blur', function() {
+        $('#birth-day').on('blur', function () {
             _this.birthValidate();
         });
 
-        $('#name').on('blur', function() {
+        $('#name').on('blur', function () {
             _this.nameValidate();
         })
-/*
-        $('#btn-email-valid').on('click', function() {
-            _this.emailAjax();
+
+        $('#btn-email-valid').on('click', function () {
+            _this.emailValid();
         });
-*/
-        $('#password-reset').on('click', function() {
+
+        $('#password-reset').on('click', function () {
             $('#password').attr('readonly', false);
             $('#password').val('');
             $('#password-confirm').val('');
@@ -36,9 +36,9 @@ const user = {
             $('#password-warning').css('display', 'block');
             $('#password-length-warning').css('display', 'block');
             $('#password-good').css('display', 'none');
-        })
-
-    },
+        });
+    }
+    ,
     passwordEqual: function() {
         const myPassword = $('#password').val();
         const confirmPassword = $('#password-confirm').val();
@@ -46,11 +46,13 @@ const user = {
             $('#password-warn').css('display', 'block');
             $('#password-confirm-good').css('display', 'none');
             $('#btn-user-save').attr('disabled', true);
+            return false;
         } else {
             $('#password-warn').css('display', 'none');
             $('#password-confirm-good').css('display', 'block');
             $('#btn-user-save').attr('disabled', false);
             $('#password').attr('readonly', true);
+            return true;
         }
     },
     passwordValidate: function() {
@@ -79,10 +81,11 @@ const user = {
         if(isGoodLength && isGoodPattern) {
             $('#password-good').css('display', 'block');
             $('#btn-user-save').attr('disabled', false);
+            return true;
         } else {
             $('#password-good').css('display', 'none');
             $('#btn-user-save').attr('disabled', true);
-
+            return false;
         }
 
     },
@@ -94,12 +97,14 @@ const user = {
             $('#birth-warn').css('display', 'block');
             $('#birth-good').css('display', 'none');
             $('#btn-user-save').attr('disabled', true);
+            return false;
         } else {
             $('#birth-warn').css('display', 'none');
             $('#birth-good').css('display', 'block');
             $('#btn-user-save').attr('disabled', false);
+            $('#birth').val(birthYear + '' + birthMonth + '' + birthDay);
+            return true;
         }
-        $('#birth').val(birthYear + '' + birthMonth + '' + birthDay);
     },
 
     emailValidate: function() {
@@ -109,26 +114,33 @@ const user = {
             $('#email-warning').css('display', 'block');
             $('#email-good').css('display', 'none');
             $('#btn-user-save').attr('disabled', true);
+            return false;
         } else {
             $('#email-warning').css('display', 'none');
             $('#email-good').css('display', 'block');
             $('#btn-user-save').attr('disabled', false);
+            return true;
         }
     },
-    emailAjax: function() {
+    emailValid: function() {
         const email = $('#email').val();
 
         $.ajax({
             url: '/emailValid',
-            method: '/post',
+            method: 'GET',
             data: email,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function(data) {
-            alert('사용 가능한 이메일 입니다.');
-            $('#btn-email-valid').attr('disabled', true);
-        }).fail(function() {
-
+            if(data === 'valid') {
+                alert('사용 가능한 이메일 입니다.');
+                $('#btn-email-valid').attr('disabled', true);
+            } else {
+                alert('이미 가입된 이메일 입니다.');
+                $('#btn-user-save').attr('disabled', true);
+            }
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
         })
     },
     nameValidate: function() {
@@ -137,10 +149,12 @@ const user = {
             $('#name-warning').css('display', 'block');
             $('#name-good').css('display', 'none');
             $('#btn-user-save').attr('disabled', false);
+            return true;
         } else {
             $('#name-warning').css('display', 'none');
             $('#name-good').css('display', 'block');
             $('#btn-user-save').attr('disabled', false);
+            return false;
         }
     }
 }

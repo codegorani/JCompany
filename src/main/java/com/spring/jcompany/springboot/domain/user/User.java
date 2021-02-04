@@ -67,9 +67,7 @@ public class User {
         return this;
     }
 
-    public void passwordUpdate(String password, String question, String answer) {
+    public void passwordUpdate(String password) {
         this.password = password;
-        this.question = question;
-        this.answer = answer;
     }
 }
