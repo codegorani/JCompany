@@ -19,6 +19,12 @@ public class AdminController {
         return "admin/admin-member";
     }
 
+    @GetMapping("/admin/board")
+    public String boardManagementPage(Model model) {
+        model.addAttribute("boards", adminService.adminFindAllBoardService());
+        return "admin/admin-board";
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/admin")
     public String adminPage() {

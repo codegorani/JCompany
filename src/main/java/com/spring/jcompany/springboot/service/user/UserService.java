@@ -3,6 +3,7 @@ package com.spring.jcompany.springboot.service.user;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
 import com.spring.jcompany.springboot.domain.user.dto.SessionUser;
+import com.spring.jcompany.springboot.domain.user.dto.UserInfoResponseDto;
 import com.spring.jcompany.springboot.domain.user.dto.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,5 +40,11 @@ public class UserService implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority(user.getRole().getKey()));
         httpSession.setAttribute("user", new SessionUser(user));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    }
+
+    @Transactional
+    public UserInfoResponseDto userInfoService(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        return new UserInfoResponseDto(user);
     }
 }

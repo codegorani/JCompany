@@ -102,7 +102,16 @@ const user = {
             $('#birth-warn').css('display', 'none');
             $('#birth-good').css('display', 'block');
             $('#btn-user-save').attr('disabled', false);
-            $('#birth').val(birthYear + '' + birthMonth + '' + birthDay);
+            let strBirthDay = birthDay
+            let strBirthMonth = birthMonth
+            if(parseInt(birthDay) < 10) {
+                strBirthDay = '0' + birthDay;
+            }
+            if(parseInt(birthMonth) < 10) {
+                strBirthMonth = '0' + birthMonth;
+            }
+
+            $('#birth').val(birthYear + '' + strBirthMonth + '' + strBirthDay);
             return true;
         }
     },

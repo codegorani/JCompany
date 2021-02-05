@@ -6,6 +6,7 @@
     <a th:if="${loginUser != null}" th:href="@{/menu/todo-list/{id}(id=${loginUser.id})}" role="button" class="btn btn-primary">Todo</a>
     <a th:if="${loginUser == null}" href="/login" role="button" class="btn btn-info">로그인</a>
     <a th:if="${loginUser != null}" href="/logout" role="button" class="btn btn-info">로그아웃</a>
+    <a th:if="${loginUser != null}" th:href="@{/menu/user/{id}(id=${loginUser.id})}" role="button" class="btn btn-secondary">정보수정</a>
     <a href="/signup" role="button" class="btn btn-warning">회원가입</a>
     <div th:replace="layout/footer" th:remove="tag"></div>
 </body>

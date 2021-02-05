@@ -5,6 +5,9 @@
 <body>
 <div class="col col-md-12">
     <div class="col col-md-5">
+        <div class="alert alert-danger" role="alert" th:if="${isError}">
+            로그인 정보가 올바르지 않습니다. 다시 시도해주십시오.
+        </div>
         <form th:action="@{/login}" method="POST">
             <div class="form-group">
                 <label for="username">이메일</label>

@@ -5,13 +5,13 @@ import com.spring.jcompany.springboot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -35,10 +35,16 @@ public class UserController {
     public String userSaveRequestControl(@RequestParam String email, @RequestParam String password,
                                          @RequestParam String name, @RequestParam String birth, @RequestParam String question,
                                          @RequestParam String answer, @RequestPart MultipartFile picture, Model model) throws Exception{
-        String baseUrl = "C:\\Users\\USER\\Documents\\GitHub\\jcompanyfile\\";
+        String baseUrl = "C:\\Users\\USER\\Documents\\GitHub\\JCompany\\src\\main\\resources\\static\\images\\user\\";
+        String userDir = email + birth;
+        String storedUrl = baseUrl + userDir;
         String filePath = "none";
         if(!Objects.equals(picture.getOriginalFilename(), "")) {
-            filePath = baseUrl + picture.getOriginalFilename();
+            File pathAsFile = new File(storedUrl);
+            if(!Files.exists(Paths.get(storedUrl))) {
+                pathAsFile.mkdir();
+            }
+            filePath = storedUrl + "\\" + picture.getOriginalFilename();
             picture.transferTo(new File(filePath));
         }
         UserSaveRequestDto requestDto = UserSaveRequestDto.builder()
@@ -51,4 +57,15 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/menu/user/{id}")
+    public String userInfoPage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("loginUser", userService.userInfoService(id));
+        return "menu/user/user-info";
+    }
+
+    @GetMapping("/login/error")
+    public String loginFailure(Model model) {
+        model.addAttribute("isError", true);
+        return "menu/login/login";
+    }
 }

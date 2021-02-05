@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+    <div class="col col-md-12">
+        <div class="col col-md-6">
+            <table class="table table-horizontal table-border">
+                <thead>
+                <tr>
+                    <th>글번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>최종수정일</th>
+                    <th>삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board: ${boards}">
+                    <td th:text="${board.id}"></td>
+                    <td th:text="${board.title}"></td>
+                    <td th:text="${board.user.email}"></td>
+                    <td th:text="${board.modifiedDate}"></td>
+                    <td><button type="button" class="btn btn-danger btn-admin-board-delete" th:data-board-id="${board.id}">삭제</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<div th:replace="layout/footer" th:remove="tag"></div>
+<script th:src="@{/js/admin/admin.js}"></script>
+</body>
+</html>

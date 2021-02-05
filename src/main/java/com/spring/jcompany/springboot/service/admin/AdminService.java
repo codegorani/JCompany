@@ -1,6 +1,7 @@
 package com.spring.jcompany.springboot.service.admin;
 
 import com.spring.jcompany.springboot.domain.todo.board.BoardRepository;
+import com.spring.jcompany.springboot.domain.todo.board.dto.BoardListResponseDto;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
 import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserResponseDto;
@@ -40,5 +41,11 @@ public class AdminService {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         user.passwordUpdate(passwordEncoder.encode("asd5689"));
         return id;
+    }
+
+    @Transactional
+    public List<BoardListResponseDto> adminFindAllBoardService() {
+        return boardRepository.findAllDescByAdmin().stream()
+                .map(BoardListResponseDto::new).collect(Collectors.toList());
     }
 }
