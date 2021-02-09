@@ -34,14 +34,14 @@ public class UserController {
     @PostMapping("/signup")
     public String userSaveRequestControl(@RequestParam String email, @RequestParam String password,
                                          @RequestParam String name, @RequestParam String birth, @RequestParam String question,
-                                         @RequestParam String answer, @RequestPart MultipartFile picture, Model model) throws Exception{
+                                         @RequestParam String answer, @RequestPart MultipartFile picture, Model model) throws Exception {
         String baseUrl = "C:\\Users\\USER\\Documents\\GitHub\\JCompany\\src\\main\\resources\\static\\images\\user\\";
         String userDir = email + birth;
         String storedUrl = baseUrl + userDir;
         String filePath = "none";
-        if(!Objects.equals(picture.getOriginalFilename(), "")) {
+        if (!Objects.equals(picture.getOriginalFilename(), "")) {
             File pathAsFile = new File(storedUrl);
-            if(!Files.exists(Paths.get(storedUrl))) {
+            if (!Files.exists(Paths.get(storedUrl))) {
                 pathAsFile.mkdir();
             }
             filePath = storedUrl + "\\" + picture.getOriginalFilename();
@@ -67,5 +67,10 @@ public class UserController {
     public String loginFailure(Model model) {
         model.addAttribute("isError", true);
         return "menu/login/login";
+    }
+
+    @GetMapping("/menu/user/pw/{id}")
+    public String userPasswordChangePage(@PathVariable("id") Long id) {
+        return "menu/user/user-password";
     }
 }

@@ -1,5 +1,5 @@
 const user = {
-    init: function() {
+    init: function () {
         const _this = this;
 
         $('#email').on('blur', function () {
@@ -37,12 +37,20 @@ const user = {
             $('#password-length-warning').css('display', 'block');
             $('#password-good').css('display', 'none');
         });
+
+        $('#btn-user-delete').on('click', function () {
+            const userEmail = $('#email').val();
+            const userInputEmail = prompt('정말로 삭제하시겠습니까? 삭제하시려면 이메일을 다시 입력하십시오.');
+            if (userEmail === userInputEmail) {
+                _this.deleteUser();
+            }
+        });
     }
     ,
-    passwordEqual: function() {
+    passwordEqual: function () {
         const myPassword = $('#password').val();
         const confirmPassword = $('#password-confirm').val();
-        if(myPassword !== confirmPassword) {
+        if (myPassword !== confirmPassword) {
             $('#password-warn').css('display', 'block');
             $('#password-confirm-good').css('display', 'none');
             $('#btn-user-save').attr('disabled', true);
@@ -55,7 +63,7 @@ const user = {
             return true;
         }
     },
-    passwordValidate: function() {
+    passwordValidate: function () {
         const password = $('#password').val();
 
         const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
@@ -63,14 +71,14 @@ const user = {
         let isGoodPattern;
         let isGoodLength;
 
-        if(passwordPattern.test(password)) {
+        if (passwordPattern.test(password)) {
             $('#password-warning').css('display', 'none');
             isGoodPattern = true;
         } else {
             $('#password-warning').css('display', 'block');
             isGoodPattern = false;
         }
-        if(password.length < 9 || password.length > 13) {
+        if (password.length < 9 || password.length > 13) {
             $('#password-length-warning').css('display', 'block');
             isGoodLength = false;
         } else {
@@ -78,7 +86,7 @@ const user = {
             isGoodLength = true;
         }
 
-        if(isGoodLength && isGoodPattern) {
+        if (isGoodLength && isGoodPattern) {
             $('#password-good').css('display', 'block');
             $('#btn-user-save').attr('disabled', false);
             return true;
@@ -89,11 +97,11 @@ const user = {
         }
 
     },
-    birthValidate: function() {
+    birthValidate: function () {
         const birthYear = $('#birth-year option:selected').val();
         const birthMonth = $('#birth-month option:selected').val();
         const birthDay = $('#birth-day option:selected').val();
-        if(birthYear === 'none' || birthMonth === 'none' || birthDay === 'none'){
+        if (birthYear === 'none' || birthMonth === 'none' || birthDay === 'none') {
             $('#birth-warn').css('display', 'block');
             $('#birth-good').css('display', 'none');
             $('#btn-user-save').attr('disabled', true);
@@ -104,10 +112,10 @@ const user = {
             $('#btn-user-save').attr('disabled', false);
             let strBirthDay = birthDay
             let strBirthMonth = birthMonth
-            if(parseInt(birthDay) < 10) {
+            if (parseInt(birthDay) < 10) {
                 strBirthDay = '0' + birthDay;
             }
-            if(parseInt(birthMonth) < 10) {
+            if (parseInt(birthMonth) < 10) {
                 strBirthMonth = '0' + birthMonth;
             }
 
@@ -116,10 +124,10 @@ const user = {
         }
     },
 
-    emailValidate: function() {
+    emailValidate: function () {
         const email = $('#email').val();
         const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-        if(!emailRegex.test(email)) {
+        if (!emailRegex.test(email)) {
             $('#email-warning').css('display', 'block');
             $('#email-good').css('display', 'none');
             $('#btn-user-save').attr('disabled', true);
@@ -131,30 +139,34 @@ const user = {
             return true;
         }
     },
-    emailValid: function() {
-        const email = $('#email').val();
+    emailValid: function () {
+        const data = $('#email').val();
+
 
         $.ajax({
             url: '/emailValid',
-            method: 'GET',
-            data: email,
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8'
-        }).done(function(data) {
-            if(data === 'valid') {
-                alert('사용 가능한 이메일 입니다.');
-                $('#btn-email-valid').attr('disabled', true);
-            } else {
-                alert('이미 가입된 이메일 입니다.');
-                $('#btn-user-save').attr('disabled', true);
+            method: 'POST',
+            data: data,
+            dataType: 'text',
+            contentType: 'text/plain; charset=utf-8',
+            success: function(data) {
+                if (data === 'valid') {
+                    alert('사용 가능한 이메일 입니다.');
+                    $('#btn-email-valid').attr('disabled', true);
+                    $('#btn-user-save').attr('disabled', false);
+                    $('#email-valid').css('display', 'block');
+                } else {
+                    alert('이미 가입된 이메일 입니다.');
+                    $('#btn-user-save').attr('disabled', true);
+                }
             }
-        }).fail(function(error) {
+        }).fail(function (error) {
             alert(JSON.stringify(error));
         })
     },
-    nameValidate: function() {
+    nameValidate: function () {
         const nameValue = $('#name').val();
-        if(nameValue.length <= 1) {
+        if (nameValue.length <= 1) {
             $('#name-warning').css('display', 'block');
             $('#name-good').css('display', 'none');
             $('#btn-user-save').attr('disabled', false);
@@ -165,6 +177,20 @@ const user = {
             $('#btn-user-save').attr('disabled', false);
             return false;
         }
+    },
+    deleteUser: function () {
+        const userId = $('#userId').val();
+
+        $.ajax({
+            url: '/api/v1/user/' + userId,
+            method: 'DELETE',
+            contentType: 'application/json; charset=utf-8',
+        }).done(function () {
+            alert('계정 삭제 완료');
+            window.location.href = '/logout';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        })
     }
 }
 

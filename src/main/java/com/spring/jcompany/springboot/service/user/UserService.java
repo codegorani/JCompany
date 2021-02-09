@@ -16,8 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -46,5 +49,41 @@ public class UserService implements UserDetailsService {
     public UserInfoResponseDto userInfoService(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         return new UserInfoResponseDto(user);
+    }
+
+    @Transactional
+    public void userDeleteService(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        String path = "C:\\Users\\USER\\Documents\\GitHub\\JCompany\\src\\main\\resources\\static\\images\\user\\" + user.getEmail() + user.getBirth().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        System.out.println(path);
+        File folder = new File(path);
+        try {
+            while (folder.exists()) {
+                File[] folder_list = folder.listFiles();
+
+                for (int i = 0; i < Objects.requireNonNull(folder_list).length; i++) {
+                    folder_list[i].delete();
+                }
+
+                if (folder_list.length == 0 && folder.isDirectory()) {
+                    folder.delete();
+                }
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        userRepository.delete(user);
+    }
+
+    public String isEmailValid(String email) {
+        String valid;
+        if(!userRepository.findByEmail(email).isPresent()) {
+            System.out.println("Email Valid");
+            valid = "valid";
+        } else {
+            System.out.println("Email Invalid");
+            valid = "invalid";
+        }
+        return valid;
     }
 }
