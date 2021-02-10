@@ -1,8 +1,14 @@
+let isAuth = false;
+let isEmail = false;
+let isPassword = false;
+let isConfirmPassword = false;
+let isValidDate = false;
+let isName = false;
 const user = {
     init: function () {
         const _this = this;
 
-        $('#email').on('blur', function () {
+        $('#email').on('keyup', function () {
             _this.emailValidate();
         });
 
@@ -14,7 +20,13 @@ const user = {
             _this.passwordEqual();
         });
 
-        $('#birth-day').on('blur', function () {
+        $('#birth-day').on('change', function () {
+            _this.birthValidate();
+        });
+        $('#birth-month').on('change', function () {
+            _this.birthValidate();
+        });
+        $('#birth-year').on('focus', function () {
             _this.birthValidate();
         });
 
@@ -26,7 +38,7 @@ const user = {
             _this.emailValid();
         });
 
-        $('#password-reset').on('click', function () {
+        /*$('#password-reset').on('click', function () {
             $('#password').attr('readonly', false);
             $('#password').val('');
             $('#password-confirm').val('');
@@ -36,7 +48,7 @@ const user = {
             $('#password-warning').css('display', 'block');
             $('#password-length-warning').css('display', 'block');
             $('#password-good').css('display', 'none');
-        });
+        });*/
 
         $('#btn-user-delete').on('click', function () {
             const userEmail = $('#email').val();
@@ -45,6 +57,37 @@ const user = {
                 _this.deleteUser();
             }
         });
+
+        $('#btn-user-save').on('click', function(e) {
+            if((isConfirmPassword && isEmail && isName && isPassword && isValidDate) !== true) {
+                if(!isEmail) {
+                    _this.emailValidate();
+                    $('#email').focus();
+                } else if(!isPassword) {
+                    _this.passwordValidate();
+                    $('#password').focus();
+                } else if(!isConfirmPassword) {
+                    _this.passwordEqual();
+                    $('#password-confirm').focus();
+                } else if(!isName){
+                    _this.nameValidate();
+                    $('#name').focus();
+                }else if(!isValidDate) {
+                    _this.birthValidate();
+                    $('#birth-year').focus();
+                }
+                alert('작성 항목을 다시 검토하세요.');
+                e.preventDefault();
+                return;
+            }
+            if(!isAuth) {
+                alert('이메일 인증을 먼저 진행하세요.')
+                e.preventDefault();
+            }
+            if(!confirm('가입하시겠습니까?')) {
+                e.preventDefault();
+            }
+        })
     }
     ,
     passwordEqual: function () {
@@ -53,14 +96,12 @@ const user = {
         if (myPassword !== confirmPassword) {
             $('#password-warn').css('display', 'block');
             $('#password-confirm-good').css('display', 'none');
-            $('#btn-user-save').attr('disabled', true);
-            return false;
+            isConfirmPassword = false;
         } else {
             $('#password-warn').css('display', 'none');
             $('#password-confirm-good').css('display', 'block');
-            $('#btn-user-save').attr('disabled', false);
-            $('#password').attr('readonly', true);
-            return true;
+            //$('#password').attr('readonly', true);
+            isConfirmPassword = true;
         }
     },
     passwordValidate: function () {
@@ -88,12 +129,10 @@ const user = {
 
         if (isGoodLength && isGoodPattern) {
             $('#password-good').css('display', 'block');
-            $('#btn-user-save').attr('disabled', false);
-            return true;
+            isPassword = true;
         } else {
             $('#password-good').css('display', 'none');
-            $('#btn-user-save').attr('disabled', true);
-            return false;
+            isPassword = false;
         }
 
     },
@@ -104,12 +143,10 @@ const user = {
         if (birthYear === 'none' || birthMonth === 'none' || birthDay === 'none') {
             $('#birth-warn').css('display', 'block');
             $('#birth-good').css('display', 'none');
-            $('#btn-user-save').attr('disabled', true);
-            return false;
+            isValidDate = false;
         } else {
             $('#birth-warn').css('display', 'none');
             $('#birth-good').css('display', 'block');
-            $('#btn-user-save').attr('disabled', false);
             let strBirthDay = birthDay
             let strBirthMonth = birthMonth
             if (parseInt(birthDay) < 10) {
@@ -120,7 +157,7 @@ const user = {
             }
 
             $('#birth').val(birthYear + '' + strBirthMonth + '' + strBirthDay);
-            return true;
+            isValidDate = true;
         }
     },
 
@@ -130,13 +167,11 @@ const user = {
         if (!emailRegex.test(email)) {
             $('#email-warning').css('display', 'block');
             $('#email-good').css('display', 'none');
-            $('#btn-user-save').attr('disabled', true);
-            return false;
+            isEmail = false;
         } else {
             $('#email-warning').css('display', 'none');
             $('#email-good').css('display', 'block');
-            $('#btn-user-save').attr('disabled', false);
-            return true;
+            isEmail = true;
         }
     },
     emailValid: function () {
@@ -153,11 +188,11 @@ const user = {
                 if (data === 'valid') {
                     alert('사용 가능한 이메일 입니다.');
                     $('#btn-email-valid').attr('disabled', true);
-                    $('#btn-user-save').attr('disabled', false);
                     $('#email-valid').css('display', 'block');
+                    isAuth = true;
                 } else {
                     alert('이미 가입된 이메일 입니다.');
-                    $('#btn-user-save').attr('disabled', true);
+                    $('#email').focus();
                 }
             }
         }).fail(function (error) {
@@ -169,13 +204,11 @@ const user = {
         if (nameValue.length <= 1) {
             $('#name-warning').css('display', 'block');
             $('#name-good').css('display', 'none');
-            $('#btn-user-save').attr('disabled', false);
-            return true;
+            isName = false;
         } else {
             $('#name-warning').css('display', 'none');
             $('#name-good').css('display', 'block');
-            $('#btn-user-save').attr('disabled', false);
-            return false;
+            isName = true;
         }
     },
     deleteUser: function () {
@@ -190,7 +223,7 @@ const user = {
             window.location.href = '/logout';
         }).fail(function (error) {
             alert(JSON.stringify(error));
-        })
+        });
     }
 }
 

@@ -44,12 +44,20 @@ public class User {
     @Column
     private String answer;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private UserTeam userTeam;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private UserLevel userLevel;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Board> boardList;
 
     @Builder
     public User(Role role, String email, String password, String name, String picture,
-                LocalDateTime birth, String question, String answer) {
+                LocalDateTime birth, String question, String answer, UserTeam userTeam, UserLevel userLevel) {
         this.role = role;
         this.email = email;
         this.password = password;
@@ -58,6 +66,8 @@ public class User {
         this.birth = birth;
         this.question = question;
         this.answer = answer;
+        this.userTeam = userTeam;
+        this.userLevel = userLevel;
     }
 
     public User update(String name, String picture, LocalDateTime birth) {

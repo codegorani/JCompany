@@ -2,6 +2,8 @@ package com.spring.jcompany.springboot.domain.user.dto;
 
 import com.spring.jcompany.springboot.domain.user.Role;
 import com.spring.jcompany.springboot.domain.user.User;
+import com.spring.jcompany.springboot.domain.user.UserLevel;
+import com.spring.jcompany.springboot.domain.user.UserTeam;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -14,6 +16,8 @@ public class UserInfoResponseDto {
     private String name;
     private String picture;
     private LocalDateTime birth;
+    private UserTeam userTeam;
+    private UserLevel userLevel;
 
     public UserInfoResponseDto(User entity) {
         this.id = entity.getId();
@@ -24,5 +28,7 @@ public class UserInfoResponseDto {
         String baseUrl = "C:/Users/USER/Documents/GitHub/JCompany/src/main/resources/static";
         this.picture = classpathUrl.replace(baseUrl, "");
         this.birth = entity.getBirth();
+        this.userTeam = entity.getUserTeam();
+        this.userLevel = entity.getUserLevel();
     }
 }

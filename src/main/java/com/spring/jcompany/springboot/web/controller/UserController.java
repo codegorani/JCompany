@@ -1,5 +1,6 @@
 package com.spring.jcompany.springboot.web.controller;
 
+import com.spring.jcompany.springboot.domain.user.UserTeam;
 import com.spring.jcompany.springboot.domain.user.dto.UserSaveRequestDto;
 import com.spring.jcompany.springboot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,10 +32,24 @@ public class UserController {
         return "menu/login/signup";
     }
 
+
+
+    @GetMapping("/menu/user/{id}")
+    public String userInfoPage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("loginUser", userService.userInfoService(id));
+        return "menu/user/user-info";
+    }
+
+    @GetMapping("/login/error")
+    public String loginFailure(Model model) {
+        model.addAttribute("isError", true);
+        return "menu/login/login";
+    }
+
     @PostMapping("/signup")
     public String userSaveRequestControl(@RequestParam String email, @RequestParam String password,
                                          @RequestParam String name, @RequestParam String birth, @RequestParam String question,
-                                         @RequestParam String answer, @RequestPart MultipartFile picture, Model model) throws Exception {
+                                         @RequestParam String answer, @RequestPart MultipartFile picture, @RequestParam UserTeam userTeam, Model model) throws Exception {
         String baseUrl = "C:\\Users\\USER\\Documents\\GitHub\\JCompany\\src\\main\\resources\\static\\images\\user\\";
         String userDir = email + birth;
         String storedUrl = baseUrl + userDir;
@@ -52,21 +67,9 @@ public class UserController {
                 .birth(LocalDateTime.of(Integer.parseInt(birth.substring(0, 4)),
                         Integer.parseInt(birth.substring(4, 6)),
                         Integer.parseInt(birth.substring(6)), 0, 0, 0))
-                .question(question).answer(answer).picture(filePath).build();
+                .question(question).answer(answer).userTeam(userTeam).picture(filePath).build();
         userService.userSaveService(requestDto);
         return "index";
-    }
-
-    @GetMapping("/menu/user/{id}")
-    public String userInfoPage(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("loginUser", userService.userInfoService(id));
-        return "menu/user/user-info";
-    }
-
-    @GetMapping("/login/error")
-    public String loginFailure(Model model) {
-        model.addAttribute("isError", true);
-        return "menu/login/login";
     }
 
     @GetMapping("/menu/user/pw/{id}")

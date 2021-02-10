@@ -1,12 +1,18 @@
 package com.spring.jcompany.springboot.web.api.user;
 
+import com.spring.jcompany.springboot.domain.user.UserTeam;
 import com.spring.jcompany.springboot.domain.user.dto.UserSaveRequestDto;
 import com.spring.jcompany.springboot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController

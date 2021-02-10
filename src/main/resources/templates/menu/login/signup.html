@@ -7,6 +7,21 @@
     <div class="col col-md-6">
         <form enctype="multipart/form-data" th:action="@{/signup}" method="post" id="signup-form">
             <div class="form-group">
+                <label for="userTeam">소속 팀</label>
+                <select name="userTeam" id="userTeam" class="form-control">
+                    <option value="STRATEGIC_PLANNING" selected>전락기획팀</option>
+                    <option value="MANAGEMENT-SUPPORT">경영지원팀</option>
+                    <option value="FINANCE">재무팀</option>
+                    <option value="QUALITY_GUARANTIED">품질보증팀</option>
+                    <option value="AIR_MANAGEMENT_SYSTEM">항공관리시스템팀</option>
+                    <option value="AIR_SALES_SYSTEM">항공영업시스템팀</option>
+                    <option value="ONLINE_PLATFORM">온라인플랫폼팀</option>
+                    <option value="LCC_AIRPORT_BUSINESS">LCC/공항사업팀</option>
+                    <option value="LCC_AIRPORT_CONSULTING">LCC/공항컨설팅팀</option>
+                    <option value="SYSTEM_TECHNOLOGY_MANAGEMENT">시스템기술관리팀</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="이메일을 입력하세요."/>
                 <p id="email-warning" style="display: none; color: red;">이메일 형식이 올바르지 않습니다.</p>
@@ -26,7 +41,6 @@
                 <input type="password" id="password-confirm" class="form-control"/>
                 <p id="password-warn" style="display: none; color: red;">패스워드가 일치하지 않습니다.</p>
                 <p id="password-confirm-good" style="display: none; color: limegreen">패스워드가 확인되었습니다.</p>
-                <button type="button" id="password-reset" class="btn btn-secondary">패스워드 다시입력.</button>
             </div>
             <div class="form-group">
                 <label for="name">이름</label>

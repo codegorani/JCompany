@@ -2,6 +2,8 @@ package com.spring.jcompany.springboot.domain.user.dto;
 
 import com.spring.jcompany.springboot.domain.user.Role;
 import com.spring.jcompany.springboot.domain.user.User;
+import com.spring.jcompany.springboot.domain.user.UserLevel;
+import com.spring.jcompany.springboot.domain.user.UserTeam;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,10 +22,11 @@ public class UserSaveRequestDto {
     private LocalDateTime birth;
     private String question;
     private String answer;
+    private UserTeam userTeam;
 
     @Builder
     public UserSaveRequestDto(String email, String password, String name, String picture,
-                              LocalDateTime birth, String question, String answer) {
+                              LocalDateTime birth, String question, String answer, UserTeam userTeam) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -31,6 +34,7 @@ public class UserSaveRequestDto {
         this.birth = birth;
         this.question = question;
         this.answer = answer;
+        this.userTeam = userTeam;
     }
 
     public User toEntity() {
@@ -43,6 +47,8 @@ public class UserSaveRequestDto {
                 .birth(birth)
                 .question(question)
                 .answer(answer)
+                .userTeam(userTeam)
+                .userLevel(UserLevel.INTERN)
                 .build();
     }
 }
