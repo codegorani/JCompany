@@ -10,7 +10,7 @@
                 <label for="userTeam">소속 팀</label>
                 <select name="userTeam" id="userTeam" class="form-control">
                     <option value="STRATEGIC_PLANNING" selected>전락기획팀</option>
-                    <option value="MANAGEMENT-SUPPORT">경영지원팀</option>
+                    <option value="MANAGEMENT_SUPPORT">경영지원팀</option>
                     <option value="FINANCE">재무팀</option>
                     <option value="QUALITY_GUARANTIED">품질보증팀</option>
                     <option value="AIR_MANAGEMENT_SYSTEM">항공관리시스템팀</option>
@@ -87,6 +87,7 @@
                 <label for="answer">답변</label>
                 <input type="text" name="answer" id="answer" class="form-control" placeholder="답변을 입력하세요."/>
             </div>
+            <a th:href="@{/}" class="btn btn-secondary" role="button">뒤로</a>
             <button type="submit" id="btn-user-save" class="btn btn-primary">가입하기</button>
         </form>
     </div>

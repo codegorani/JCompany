@@ -8,19 +8,23 @@
             <table class="table table-horizontal table-border">
                 <thead>
                 <tr>
-                    <th>EMAIL</th>
-                    <th>NAME</th>
-                    <th>BIRTH</th>
-                    <th>MODIFY</th>
-                    <th>DELETE</th>
+                    <th>부서</th>
+                    <th>직급</th>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>생년월일</th>
+                    <th>초기화</th>
+                    <th>삭제</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="user: ${users}">
+                    <td th:text="${user.userTeam.team}"></td>
+                    <td th:text="${user.userLevel.title}"></td>
+                    <td><a th:href="@{/admin/member/{id}(id=${user.id})}" th:text="${user.name}"></a></td>
                     <td th:text="${user.email}"></td>
-                    <td th:text="${user.name}"></td>
                     <td th:text="${user.birth}"></td>
-                    <td><button type="button" class="btn btn-secondary btn-admin-user-password" th:data-user-id="${user.id}">패스워드초기화</button></td>
+                    <td><button type="button" class="btn btn-secondary btn-admin-user-password" th:data-user-id="${user.id}">초기화</button></td>
                     <td><button type="button" class="btn btn-danger btn-admin-user-delete" th:data-user-id="${user.id}">삭제</button></td>
                 </tr>
                 </tbody>

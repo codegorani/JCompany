@@ -1,6 +1,7 @@
 package com.spring.jcompany.springboot.domain.user;
 
 import com.spring.jcompany.springboot.domain.todo.board.Board;
+import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -74,6 +75,15 @@ public class User {
         this.name = name;
         this.picture = picture;
         this.birth = birth;
+        return this;
+    }
+
+    public User updateByAdmin(UserTeam userTeam, UserLevel userLevel, Role role, String name, String picture) {
+        this.userTeam = userTeam;
+        this.userLevel = userLevel;
+        this.role = role;
+        this.name = name;
+        this.picture = picture;
         return this;
     }
 

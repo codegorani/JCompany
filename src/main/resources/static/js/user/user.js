@@ -86,6 +86,7 @@ const user = {
             }
             if(!confirm('가입하시겠습니까?')) {
                 e.preventDefault();
+                alert('가입이 완료되었습니다.');
             }
         })
     }
