@@ -55,12 +55,6 @@ public class AdminController {
         return "admin/admin-menu";
     }
 
-    @GetMapping("/admin/member/{id}")
-    public String memberInfoManagementPage(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", adminService.adminFindUserByIdService(id));
-        return "admin/admin-member-management";
-    }
-
     @PostMapping("/admin/member/{id}")
     public String memberUpdateRequestControl(@PathVariable("id") Long id, @RequestParam UserTeam userTeam, @RequestParam UserLevel userLevel,
                                              @RequestParam String name, @RequestParam Role role, @RequestPart MultipartFile picture) throws IOException {
@@ -69,5 +63,11 @@ public class AdminController {
                         .name(name).role(role).picture(picture).build()
         );
         return "redirect:/admin/member";
+    }
+
+    @GetMapping("/admin/member/{id}")
+    public String memberInfoManagementPage(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("user", adminService.adminFindUserByIdService(id));
+        return "admin/admin-member-management";
     }
 }

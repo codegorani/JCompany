@@ -68,7 +68,7 @@ public class UserController {
                         Integer.parseInt(birth.substring(6)), 0, 0, 0))
                 .question(question).answer(answer).userTeam(userTeam).picture(filePath).build();
         userService.userSaveService(requestDto);
-        return "index";
+        return "redirect:/";
     }
 
     @GetMapping("/menu/user/pw/{id}")

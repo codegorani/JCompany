@@ -9,12 +9,15 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-    @Query("SELECT u FROM User u ORDER BY u.id DESC")
+    @Query("SELECT u FROM User u ORDER BY u.userLevel asc, u.userTeam desc")
     List<User> findAllDesc();
 
+    @Query("SELECT u FROM User u WHERE u.userTeam = :userTeam ORDER BY u.userLevel asc")
     List<User> findAllByUserTeam(UserTeam userTeam);
 
+    @Query("SELECT u FROM User u WHERE u.name LIKE %:name% ORDER BY u.userLevel asc, u.userTeam desc")
     List<User> findAllByName(String name);
 
+    @Query("SELECT u FROM User u WHERE u.userLevel = :userLevel ORDER BY u.userTeam desc ")
     List<User> findAllByUserLevel(UserLevel userLevel);
 }

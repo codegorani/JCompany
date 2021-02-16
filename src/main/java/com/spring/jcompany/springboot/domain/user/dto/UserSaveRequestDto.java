@@ -48,7 +48,7 @@ public class UserSaveRequestDto {
                 .question(question)
                 .answer(answer)
                 .userTeam(userTeam)
-                .userLevel(UserLevel.INTERN)
+                .userLevel(UserLevel.DD_INTERN)
                 .build();
     }
 }
