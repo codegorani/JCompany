@@ -3,7 +3,9 @@ package com.spring.jcompany.springboot.service.admin;
 import com.spring.jcompany.springboot.domain.todo.board.BoardRepository;
 import com.spring.jcompany.springboot.domain.todo.board.dto.BoardListResponseDto;
 import com.spring.jcompany.springboot.domain.user.User;
+import com.spring.jcompany.springboot.domain.user.UserLevel;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
+import com.spring.jcompany.springboot.domain.user.UserTeam;
 import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserListResponseDto;
 import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserResponseDto;
 import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserUpdateRequestDto;
@@ -126,5 +128,23 @@ public class AdminService {
             requestDto.getPicture().transferTo(new File(filePath));
         }
         userRepository.save(user.updateByAdmin(requestDto.getUserTeam(), requestDto.getUserLevel(), requestDto.getRole(), requestDto.getName(), filePath));
+    }
+
+    @Transactional
+    public List<AdminRequestUserListResponseDto> adminFindAllUserByUserTeam(UserTeam userTeam) {
+        return userRepository.findAllByUserTeam(userTeam).stream()
+                .map(AdminRequestUserListResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<AdminRequestUserListResponseDto> adminFindAllUserByUserLevel(UserLevel userLevel) {
+        return userRepository.findAllByUserLevel(userLevel).stream()
+                .map(AdminRequestUserListResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<AdminRequestUserListResponseDto> adminFindAllUserByName(String name) {
+        return userRepository.findAllByName(name).stream()
+                .map(AdminRequestUserListResponseDto::new).collect(Collectors.toList());
     }
 }

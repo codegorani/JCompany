@@ -4,7 +4,7 @@
 <div th:replace="layout/header" th:remove="tag"></div>
 <body>
     <div class="col col-md-12">
-        <div class="col col-md-6">
+        <div class="col col-md-10">
             <table class="table table-horizontal table-border">
                 <thead>
                 <tr>
@@ -29,6 +29,18 @@
                 </tr>
                 </tbody>
             </table>
+            <form method="get" th:action="@{/admin/member}">
+                <div class="form-group">
+                    <select class="form-control" id="searchType" name="searchType">
+                        <option value="none" selected>--전체--</option>
+                        <option value="userTeam">부서</option>
+                        <option value="userLevel">직급</option>
+                        <option value="name">이름</option>
+                    </select>
+                    <input type="hidden" id="searchValue" name="searchValue"/>
+                    <button id="btn-search" type="submit" class="btn btn-primary">검색</button>
+                </div>
+            </form>
         </div>
     </div>
 <div th:replace="layout/footer" th:remove="tag"></div>

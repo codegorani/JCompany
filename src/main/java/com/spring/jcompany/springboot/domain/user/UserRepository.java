@@ -11,4 +11,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u ORDER BY u.id DESC")
     List<User> findAllDesc();
+
+    List<User> findAllByUserTeam(UserTeam userTeam);
+
+    List<User> findAllByName(String name);
+
+    List<User> findAllByUserLevel(UserLevel userLevel);
 }

@@ -19,6 +19,44 @@ const admin = {
         $('.btn-admin-user-password').on('click', function() {
             const userId = $(this).data('userId');
             _this.userPasswordReset(userId);
+        });
+
+        $('#searchType').on('change', function() {
+            $('#searchValue').remove();
+            let option = $('#searchType option:selected').val();
+            if(option === 'userLevel') {
+                $(this).after('<select id="searchValue" name="searchValue" class="form-control">\n' +
+                    '                        <option value="INTERN">인턴</option>\n' +
+                    '                        <option value="STAFF" selected>사원</option>\n' +
+                    '                        <option value="ASSOCIATE">주임</option>\n' +
+                    '                        <option value="ASSOCIATE_MANAGER">대리</option>\n' +
+                    '                        <option value="MANAGER">과장</option>\n' +
+                    '                        <option value="SENIOR_MANAGER">차장</option>\n' +
+                    '                        <option value="EXECUTIVE_MANAGER">부장</option>\n' +
+                    '                        <option value="ASSOCIATE_EXECUTIVE_DIRECTOR">이사</option>\n' +
+                    '                        <option value="EXECUTIVE_DIRECTOR">상무이사</option>\n' +
+                    '                        <option value="EXECUTIVE_VICE_PRESIDENT">전무이사</option>\n' +
+                    '                        <option value="SENIOR_EXECUTIVE_VICE_PRESIDENT">부사장</option>\n' +
+                    '                        <option value="PRESIDENT">사장</option>\n' +
+                    '                    </select>');
+            } else if(option === 'userTeam') {
+                $(this).after('<select id="searchValue" name="searchValue" class="form-control">\n' +
+                    '                        <option value="STRATEGIC_PLANNING" selected>전락기획팀</option>\n' +
+                    '                        <option value="MANAGEMENT_SUPPORT">경영지원팀</option>\n' +
+                    '                        <option value="FINANCE">재무팀</option>\n' +
+                    '                        <option value="QUALITY_GUARANTIED">품질보증팀</option>\n' +
+                    '                        <option value="AIR_MANAGEMENT_SYSTEM">항공관리시스템팀</option>\n' +
+                    '                        <option value="AIR_SALES_SYSTEM">항공영업시스템팀</option>\n' +
+                    '                        <option value="ONLINE_PLATFORM">온라인플랫폼팀</option>\n' +
+                    '                        <option value="LCC_AIRPORT_BUSINESS">LCC/공항사업팀</option>\n' +
+                    '                        <option value="LCC_AIRPORT_CONSULTING">LCC/공항컨설팅팀</option>\n' +
+                    '                        <option value="SYSTEM_TECHNOLOGY_MANAGEMENT">시스템기술관리팀</option>\n' +
+                    '                    </select>');
+            } else if(option === 'name') {
+                $(this).after('<input type="text" id="searchValue" name="searchValue" class="form-control"/>');
+            } else if(option === 'none') {
+                $(this).after('<input type="hidden" id="searchValue" name="searchValue"/>');
+            }
         })
     },
     userDelete: function(userId) {

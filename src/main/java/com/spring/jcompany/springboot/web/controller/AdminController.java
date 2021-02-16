@@ -22,8 +22,24 @@ public class AdminController {
     private final AdminService adminService;
 
     @GetMapping("/admin/member")
-    public String memberManagementPage(Model model) {
-        model.addAttribute("users", adminService.adminFindAllUserService());
+    public String memberManagementFindByName(@RequestParam(value = "searchType", required = false) String searchType,
+                                             @RequestParam(value = "searchValue", required = false) String searchValue,
+                                             Model model) {
+        if(searchType != null) {
+            if (searchType.equals("userTeam")) {
+                UserTeam userTeam = UserTeam.valueOf(searchValue);
+                model.addAttribute("users", adminService.adminFindAllUserByUserTeam(userTeam));
+            } else if (searchType.equals("name")) {
+                model.addAttribute("users", adminService.adminFindAllUserByName(searchValue));
+            } else if (searchType.equals("userLevel")) {
+                UserLevel userLevel = UserLevel.valueOf(searchValue);
+                model.addAttribute("users", adminService.adminFindAllUserByUserLevel(userLevel));
+            } else if (searchType.equals("none")) {
+                model.addAttribute("users", adminService.adminFindAllUserService());
+            }
+        } else {
+            model.addAttribute("users", adminService.adminFindAllUserService());
+        }
         return "admin/admin-member";
     }
 
