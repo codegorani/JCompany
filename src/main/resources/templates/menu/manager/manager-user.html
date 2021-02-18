@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+
+    <div class="col col-md-12">
+        <div class="col col-md-10">
+            <table class="table table-border table-horizontal">
+                <thead>
+                <tr>
+                    <th>직급</th>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>생년월일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="team: ${teams}">
+                    <td th:text="${team.userLevel.title}"></td>
+                    <td th:text="${team.name}"></td>
+                    <td th:text="${team.email}"></td>
+                    <td th:text="${team.birth}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<div th:replace="layout/footer" th:remove="tag"></div>
+</body>
+</html>

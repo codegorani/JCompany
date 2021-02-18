@@ -40,6 +40,7 @@ const admin = {
                     '                        <option value="AA_PRESIDENT">사장</option>\n' +
                     '                    </select>');
                 $('#searchValue').focus();
+                $(this).remove();
             } else if(option === 'userTeam') {
                 $(this).after('<select id="searchValue" name="searchValue" class="form-control">\n' +
                     '                        <option value="STRATEGIC_PLANNING" selected>전락기획팀</option>\n' +
