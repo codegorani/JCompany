@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+    <div class="col col-md-12">
+        <a th:href="@{/documents/write}" role="button" class="btn btn-primary">문서작성</a>
+    </div>
+<div th:replace="layout/footer" th:remove="tag"></div>
+</body>
+</html>

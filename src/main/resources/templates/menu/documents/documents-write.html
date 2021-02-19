@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+    <div class="col col-md-12">
+        <div class="col col-md-10">
+            <form>
+                <table>
+                        <tr th:each="approval: ${approvals}">
+                            <td th:text="${approval.userTeam}"></td>
+                            <td th:text="${approval.userLevel}"></td>
+                            <td th:text="${approval.name}"></td>
+                        </tr>
+                </table>
+                <select class="form-control">
+                    <option th:each="approval: ${approvals}" th:text="${approval.name} +' '+ ${approval.userLevel} + '님'"></option>
+                </select>
+            </form>
+        </div>
+    </div>
+<div th:replace="layout/footer" th:remove="tag"></div>
+</body>
+</html>

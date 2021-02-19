@@ -1,5 +1,6 @@
 package com.spring.jcompany.springboot.domain.user;
 
+import com.spring.jcompany.springboot.domain.docs.Documents;
 import com.spring.jcompany.springboot.domain.todo.board.Board;
 import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserUpdateRequestDto;
 import lombok.Builder;
@@ -55,6 +56,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Board> boardList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Documents> documentsList;
+
+    @OneToMany(mappedBy = "approval")
+    private List<Documents> approvalList;
 
     @Builder
     public User(Role role, String email, String password, String name, String picture,

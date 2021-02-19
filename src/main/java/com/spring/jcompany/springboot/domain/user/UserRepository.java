@@ -2,6 +2,7 @@ package com.spring.jcompany.springboot.domain.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.userLevel = :userLevel ORDER BY u.userTeam desc ")
     List<User> findAllByUserLevel(UserLevel userLevel);
+
+    @Query("SELECT u FROM User u WHERE u.userTeam = :userTeam and u.role = :role and u.userLevel < :userLevel ORDER BY u.userLevel asc")
+    List<User> findAllByUserTeamAndRoleAndUserLevelIsGreaterThan(UserTeam userTeam, Role role, UserLevel userLevel);
 }
