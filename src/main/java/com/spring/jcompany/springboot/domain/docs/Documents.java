@@ -22,7 +22,14 @@ public class Documents {
     private User user;
 
     @Column
+    @Enumerated(EnumType.STRING)
+    private DocumentsStatus documentsStatus;
+
+    @Column
     private String title;
+
+    @Column
+    private String content;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -35,11 +42,14 @@ public class Documents {
     private LocalDateTime draftDate;
 
     @Builder
-    public Documents(User user, String title, DocumentsType documentsType, User approval, LocalDateTime draftDate) {
+    public Documents(User user, String title, String content, DocumentsType documentsType,
+                     User approval, LocalDateTime draftDate, DocumentsStatus documentsStatus) {
         this.user = user;
         this.title = title;
+        this.content = content;
         this.documentsType = documentsType;
         this.approval = approval;
         this.draftDate = draftDate;
+        this.documentsStatus = documentsStatus;
     }
 }

@@ -22,6 +22,7 @@ public class DocumentsController {
     @GetMapping("/documents/write")
     public String documentsWritePage(@LoginUser SessionUser user, Model model) {
         model.addAttribute("approvals", documentsService.documentsApprovalListService(user));
+        model.addAttribute("loginUser", user);
         return "menu/documents/documents-write";
     }
 
