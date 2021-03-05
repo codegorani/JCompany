@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RequiredArgsConstructor
 @Controller
@@ -26,5 +27,29 @@ public class DocumentsController {
         return "menu/documents/documents-write";
     }
 
+    @GetMapping("/documents/list/me")
+    public String documentsMePage(@LoginUser SessionUser user, Model model) {
+        model.addAttribute("loginUser", user);
+        model.addAttribute("docs", documentsService.documentsMyDocsListService(user.getId()));
+        return "menu/documents/documents-list-me";
+    }
 
+    @GetMapping("/documents/list/tome")
+    public String documentsToMePage(@LoginUser SessionUser user, Model model) {
+        model.addAttribute("loginUser", user);
+        model.addAttribute("docs", documentsService.documentsToMeListService(user.getId()));
+        return "menu/documents/documents-list-tome";
+    }
+
+    @GetMapping("/api/docs/{id}")
+    public String documentsDetailToMePage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("doc", documentsService.documentsToMeDetailService(id));
+        return "menu/documents/documents-view-tome";
+    }
+
+    @GetMapping("/api/docs/approval/{id}")
+    public String documentsApprovalRequestControl(@PathVariable("id") Long id) {
+        documentsService.documentsApprovalService(id);
+        return "redirect:/documents/list/tome";
+    }
 }

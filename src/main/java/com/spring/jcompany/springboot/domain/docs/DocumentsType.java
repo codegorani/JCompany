@@ -18,6 +18,6 @@ public enum DocumentsType {
     EXPENDITURE_RESOLUTION("EXPENDITURE_RESOLUTION", "지출결의서");
 
     private final String key;
-    private final String value;
+    private final String type;
 
 }

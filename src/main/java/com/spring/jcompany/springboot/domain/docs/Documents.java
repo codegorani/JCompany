@@ -52,4 +52,8 @@ public class Documents {
         this.draftDate = draftDate;
         this.documentsStatus = documentsStatus;
     }
+
+    public void statusUpdate(DocumentsStatus documentsStatus) {
+        this.documentsStatus = documentsStatus;
+    }
 }

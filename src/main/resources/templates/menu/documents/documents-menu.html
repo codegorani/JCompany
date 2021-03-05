@@ -5,6 +5,8 @@
 <body>
     <div class="col col-md-12">
         <a th:href="@{/documents/write}" role="button" class="btn btn-primary">문서작성</a>
+        <a th:href="@{/documents/list/me}" role="button" class="btn btn-warning">내가 기안한 문서</a>
+        <a th:href="@{/documents/list/tome}" role="button" class="btn btn-danger">문서 수신함</a>
     </div>
 <div th:replace="layout/footer" th:remove="tag"></div>
 </body>

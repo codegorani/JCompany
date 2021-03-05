@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+<div class="col col-md-12">
+    <div class="col col-md-6">
+        <table class="table table-boarder table-horizontal">
+            <tr>
+                <th>문서종류</th>
+                <th>제목</th>
+                <th>결재자</th>
+                <th>결재상태</th>
+            </tr>
+            <tr th:each="doc: ${docs}">
+                <td th:text="${doc.documentsType.type}"></td>
+                <td th:text="${doc.title}"></td>
+                <td th:text="${doc.approval.name} + ' ' + ${doc.approval.userLevel.title}"></td>
+                <td th:text="${doc.documentsStatus.status}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div th:replace="layout/footer" th:remove="tag"></div>
+</body>
+</html>
