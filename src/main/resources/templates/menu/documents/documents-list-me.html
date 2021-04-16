@@ -14,7 +14,7 @@
             </tr>
             <tr th:each="doc: ${docs}">
                 <td th:text="${doc.documentsType.type}"></td>
-                <td th:text="${doc.title}"></td>
+                <td><a th:href="@{/api/docs/me/{id}(id=${doc.id})}" th:text="${doc.title}"></a></td>
                 <td th:text="${doc.approval.name} + ' ' + ${doc.approval.userLevel.title}"></td>
                 <td th:text="${doc.documentsStatus.status}"></td>
             </tr>

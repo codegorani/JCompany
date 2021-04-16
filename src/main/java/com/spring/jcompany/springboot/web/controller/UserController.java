@@ -4,6 +4,8 @@ import com.spring.jcompany.springboot.domain.user.UserTeam;
 import com.spring.jcompany.springboot.domain.user.dto.UserSaveRequestDto;
 import com.spring.jcompany.springboot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Controller
 public class UserController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -41,6 +45,7 @@ public class UserController {
 
     @GetMapping("/login/error")
     public String loginFailure(Model model) {
+        logger.warn("login information wrong");
         model.addAttribute("isError", true);
         return "menu/login/login";
     }
@@ -60,6 +65,7 @@ public class UserController {
             }
             filePath = storedUrl + "\\" + picture.getOriginalFilename();
             picture.transferTo(new File(filePath));
+            logger.info("file has stored at " + filePath);
         }
         UserSaveRequestDto requestDto = UserSaveRequestDto.builder()
                 .email(email).password(password).name(name)

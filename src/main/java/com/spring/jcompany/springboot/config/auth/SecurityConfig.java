@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().headers().frameOptions().disable();
 
         http.authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/images/**", "/", "/signup", "/api/ip", "/emailValid").permitAll()
+                .antMatchers("/css/**", "/js/**", "/images/**", "/", "/signup", "/api/ip", "/emailValid", "/swagger-ui.html",  "/v2/**", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/webjars/**", "/swagger**").permitAll()
                 .antMatchers("/api/v1/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.USER_MANAGER.name(),Role.DEVELOPER.name())
                 .antMatchers("/admin/**").hasAnyRole(Role.ADMIN.name(), Role.DEVELOPER.name())
                 .antMatchers("/manager/**").hasAnyRole(Role.ADMIN.name(), Role.DEVELOPER.name(), Role.USER_MANAGER.name())
@@ -52,6 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true);
 
         http.userDetailsService(userService);
+
+
     }
 
     @Override
