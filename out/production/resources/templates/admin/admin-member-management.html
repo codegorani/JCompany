@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+
+    <div class="col col-md-12">
+        <div class="col col-md-6">
+            <form method="post" enctype="multipart/form-data" th:action="@{/admin/member/{id}(id=${user.id})}">
+                <div class="form-group">
+                    <label for="role">권한</label>
+                    <select id="role" name="role" class="form-control">
+                        <option value="USER" th:selected="'ROLE_USER' eq ${user.role.key}">일반 사용자</option>
+                        <option value="USER_MANAGER" th:selected="'ROLE_USER_MANAGER' eq ${user.role.key}">사용자 관리자</option>
+                        <option value="ADMIN" th:selected="'ROLE_ADMIN' eq ${user.role.key}">시스템 관리자</option>
+                        <option value="DEVELOPER" th:selected="'ROLE_DEVELOPER' eq ${user.role.key}">개발자</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userTeam">부서</label>
+                    <select id="userTeam" name="userTeam" class="form-control">
+                        <option value="STRATEGIC_PLANNING" th:selected="'STRATEGIC_PLANNING' eq ${user.userTeam.key}">전락기획팀</option>
+                        <option value="MANAGEMENT_SUPPORT" th:selected="'MANAGEMENT_SUPPORT' eq ${user.userTeam.key}">경영지원팀</option>
+                        <option value="FINANCE" th:selected="'FINANCE' eq ${user.userTeam.key}">재무팀</option>
+                        <option value="QUALITY_GUARANTIED" th:selected="'QUALITY_GUARANTIED' eq ${user.userTeam.key}">품질보증팀</option>
+                        <option value="AIR_MANAGEMENT_SYSTEM" th:selected="'AIR_MANAGEMENT_SYSTEM' eq ${user.userTeam.key}">항공관리시스템팀</option>
+                        <option value="AIR_SALES_SYSTEM" th:selected="'AIR_SALES_SYSTEM' eq ${user.userTeam.key}">항공영업시스템팀</option>
+                        <option value="ONLINE_PLATFORM" th:selected="'ONLINE_PLATFORM' eq ${user.userTeam.key}">온라인플랫폼팀</option>
+                        <option value="LCC_AIRPORT_BUSINESS" th:selected="'LCC_AIRPORT_BUSINESS' eq ${user.userTeam.key}">LCC/공항사업팀</option>
+                        <option value="LCC_AIRPORT_CONSULTING" th:selected="'LCC_AIRPORT_CONSULTING' eq ${user.userTeam.key}">LCC/공항컨설팅팀</option>
+                        <option value="SYSTEM_TECHNOLOGY_MANAGEMENT" th:selected="'SYSTEM_TECHNOLOGY_MANAGEMENT' eq ${user.userTeam.key}">시스템기술관리팀</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userLevel">직급</label>
+                    <select id="userLevel" name="userLevel" class="form-control">
+                        <option value="DD_INTERN" th:selected="'INTERN' eq ${user.userLevel.key}">인턴</option>
+                        <option value="DC_STAFF" th:selected="'STAFF' eq ${user.userLevel.key}">사원</option>
+                        <option value="DB_ASSOCIATE" th:selected="'ASSOCIATE' eq ${user.userLevel.key}">주임</option>
+                        <option value="DA_ASSOCIATE_MANAGER" th:selected="'ASSOCIATE_MANAGER' eq ${user.userLevel.key}">대리</option>
+                        <option value="CC_MANAGER" th:selected="'MANAGER' eq ${user.userLevel.key}">과장</option>
+                        <option value="CB_SENIOR_MANAGER" th:selected="'SENIOR_MANAGER' eq ${user.userLevel.key}">차장</option>
+                        <option value="CA_EXECUTIVE_MANAGER" th:selected="'EXECUTIVE_MANAGER' eq ${user.userLevel.key}">부장</option>
+                        <option value="BC_ASSOCIATE_EXECUTIVE_DIRECTOR" th:selected="'ASSOCIATE_EXECUTIVE_DIRECTOR' eq ${user.userLevel.key}">이사</option>
+                        <option value="BB_EXECUTIVE_DIRECTOR" th:selected="'EXECUTIVE_DIRECTOR' eq ${user.userLevel.key}">상무이사</option>
+                        <option value="BA_EXECUTIVE_VICE_PRESIDENT" th:selected="'EXECUTIVE_VICE_PRESIDENT' eq ${user.userLevel.key}">전무이사</option>
+                        <option value="AB_SENIOR_EXECUTIVE_VICE_PRESIDENT" th:selected="'SENIOR_EXECUTIVE_VICE_PRESIDENT' eq ${user.userLevel.key}">부사장</option>
+                        <option value="AA_PRESIDENT" th:selected="'PRESIDENT' eq ${user.userLevel.key}">사장</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input id="name" name="name" type="text" class="form-control" th:value="${user.name}"/>
+                </div>
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input id="email" name="email" type="email" class="form-control" th:value="${user.email}" readonly/>
+                </div>
+                <div class="form-group">
+                    <label>사진</label>
+                    <img width="200" height="200" th:if="${user.picture == 'none'}" th:src="@{/images/no_image.gif}"
+                         class="img-thumbnail" alt="NO IMG"/>
+                    <img width="200" height="200" th:if="${user.picture != 'none'}" th:src="${user.picture}"
+                         class="img-thumbnail" alt="ERR"/>
+                    <input type="file" id="picture" name="picture" class="form-group"/>
+                </div>
+                <a th:href="@{/admin/member}" class="btn btn-secondary">뒤로</a>
+                <button type="submit" class="btn btn-primary">수정완료</button>
+            </form>
+        </div>
+    </div>
+
+<div th:replace="layout/footer" th:remove="tag"></div>
+</body>
+</html>

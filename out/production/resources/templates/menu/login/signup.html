@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+<div class="col col-md-12">
+    <div class="col col-md-6">
+        <form enctype="multipart/form-data" th:action="@{/signup}" method="post" id="signup-form">
+            <div class="form-group">
+                <label for="userTeam">소속 팀</label>
+                <select name="userTeam" id="userTeam" class="form-control">
+                    <option value="STRATEGIC_PLANNING" selected>전락기획팀</option>
+                    <option value="MANAGEMENT_SUPPORT">경영지원팀</option>
+                    <option value="FINANCE">재무팀</option>
+                    <option value="QUALITY_GUARANTIED">품질보증팀</option>
+                    <option value="AIR_MANAGEMENT_SYSTEM">항공관리시스템팀</option>
+                    <option value="AIR_SALES_SYSTEM">항공영업시스템팀</option>
+                    <option value="ONLINE_PLATFORM">온라인플랫폼팀</option>
+                    <option value="LCC_AIRPORT_BUSINESS">LCC/공항사업팀</option>
+                    <option value="LCC_AIRPORT_CONSULTING">LCC/공항컨설팅팀</option>
+                    <option value="SYSTEM_TECHNOLOGY_MANAGEMENT">시스템기술관리팀</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="이메일을 입력하세요."/>
+                <p id="email-warning" style="display: none; color: red;">이메일 형식이 올바르지 않습니다.</p>
+                <p id="email-good" style="display: none; color: limegreen">사용 가능한 이메일입니다.</p>
+            </div>
+            <button type="button" id="btn-email-valid" class="btn btn-info">이메일검사</button>
+            <p id='email-valid' style="display: none; color: limegreen">유효한 이메일입니다.</p>
+            <div class="form-group">
+                <label for="password">패스워드</label>
+                <input type="password" name="password" id="password" class="form-control"/>
+                <p id="password-length-warning" style="display: none; color: red;">패스워드는 8~13자리여야 합니다.</p>
+                <p id="password-warning" style="display: none; color: red;">패스워드는 최소 한 가지 이상의 문자와 숫자 특수문자가 들어가야 합니다.</p>
+                <p id="password-good" style="display: none; color: limegreen">사용 가능한 패스워드입니다.</p>
+            </div>
+            <div class="form-group">
+                <label for="password-confirm">패스워드 확인</label>
+                <input type="password" id="password-confirm" class="form-control"/>
+                <p id="password-warn" style="display: none; color: red;">패스워드가 일치하지 않습니다.</p>
+                <p id="password-confirm-good" style="display: none; color: limegreen">패스워드가 확인되었습니다.</p>
+            </div>
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" name="name" id="name" class="form-control" placeholder="이름을 입력하세요."/>
+                <p id="name-warning" style="display: none; color: red">이름은 필수입니다.</p>
+                <p id="name-good" style="display: none; color: limegreen">이름이 입력되었습니다.</p>
+            </div>
+            <div class="form-group">
+                <label for="picture">사진</label>
+                <input type="file" name="picture" id="picture" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="birth">생년월일</label><br/>
+                <select id="birth-year" class="form-select">
+                    <option value="none" selected>--선택--</option>
+                    <option th:each="num, numStat:${#numbers.sequence(2020, 1900)}" th:value="${numStat.current}"
+                            th:text="${numStat.current}"></option>
+                </select><label for="birth-year">년</label>
+                <select id="birth-month" class="form-select">
+                    <option value="none" selected>--선택--</option>
+                    <option th:each="num, numStat:${#numbers.sequence(1, 12)}" th:value="${numStat.current}"
+                            th:text="${numStat.current}"></option>
+                </select><label for="birth-month">월</label>
+                <select id="birth-day" class="form-select">
+                    <option value="none" selected>--선택--</option>
+                    <option th:each="num, numStat:${#numbers.sequence(1, 31)}" th:value="${numStat.current}"
+                            th:text="${numStat.current}"></option>
+                </select><label for="birth-day">일</label>
+                <p id="birth-warn" style="display: none; color: red">생년월일이 올바르지 않습니다.</p>
+                <p id="birth-good" style="display: none; color: limegreen">생년월일이 확인되었습니다.</p>
+                <input type="hidden" name="birth" id="birth" class="form-control"/>
+
+            </div>
+            <div class="form-group">
+                <label for="question">비밀번호 찾기 문제</label>
+                <select name="question" id="question" class="form-control">
+                    <option value="내 보물 1호는?" selected>내 보물 1호는?</option>
+                    <option value="내 고향은?">내 고향은?</option>
+                    <option value="내 혈액형은?">내 혈액형은?</option>
+                    <option value="내 회사는?">내 회사는?</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="answer">답변</label>
+                <input type="text" name="answer" id="answer" class="form-control" placeholder="답변을 입력하세요."/>
+            </div>
+            <a th:href="@{/}" class="btn btn-secondary" role="button">뒤로</a>
+            <button type="submit" id="btn-user-save" class="btn btn-primary">가입하기</button>
+        </form>
+    </div>
+</div>
+<div th:replace="layout/footer" th:remove="tag"></div>
+<script th:src="@{/js/user/user.js}"></script>
+</body>
+</html>

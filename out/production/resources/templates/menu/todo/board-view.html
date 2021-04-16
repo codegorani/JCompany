@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+<div class="col col-md-12">
+    <div class="col col-md-6">
+        <input type="hidden" id="boardId" th:value="${board.id}"/>
+<h3 id="board-title" th:text="${board.title}"></h3>
+        <button type="button" id="btn-board-title" class="btn btn-secondary">제목변경</button>
+        <br/>
+<div style="cursor: pointer" class="card" th:each="card: ${board.cardList}">
+    <div class="card-body">
+        <h4 class="card-title"  th:text="${card.cardType.title}"></h4>
+        <a class="card-text" th:href="@{/menu/card/{id}(id=${card.id})}" th:text="${card.title}" style="font-size: large"></a>
+        <br/>
+        <button type="button" class="btn btn-primary btn-card-delete">
+            <input type="hidden" th:value="${card.id}"/><span th:if="${card.cardType.key eq 'COMPLETE'}">완료</span>
+            <span th:if="${card.cardType.key != 'COMPLETE'}">다음</span>
+        </button>
+    </div>
+</div>
+        <hr/><br/>
+        <a href="/menu/todo" role="button" class="btn btn-secondary">뒤로</a>
+        <a th:href="@{/menu/card-save/{id}(id=${board.id})}" role="button" class="btn btn-primary">새카드만들기</a>
+    </div>
+</div>
+
+<div th:replace="layout/footer" th:remove="tag"></div>
+<script th:src="@{/js/card/card.js}"></script>
+<script th:src="@{/js/todo/todo.js}"></script>
+</body>
+</html>

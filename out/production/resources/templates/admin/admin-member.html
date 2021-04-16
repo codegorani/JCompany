@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+    <div class="col col-md-12">
+        <div class="col col-md-10">
+            <table class="table table-horizontal table-border">
+                <thead>
+                <tr>
+                    <th>부서</th>
+                    <th>직급</th>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>생년월일</th>
+                    <th>초기화</th>
+                    <th>삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user: ${users}">
+                    <td th:text="${user.userTeam.team}"></td>
+                    <td th:text="${user.userLevel.title}"></td>
+                    <td><a th:href="@{/admin/member/{id}(id=${user.id})}" th:text="${user.name}"></a></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.birth}"></td>
+                    <td><button type="button" class="btn btn-secondary btn-admin-user-password" th:data-user-id="${user.id}">초기화</button></td>
+                    <td><button type="button" class="btn btn-danger btn-admin-user-delete" th:data-user-id="${user.id}">삭제</button></td>
+                </tr>
+                </tbody>
+            </table>
+            <form method="get" th:action="@{/admin/member}">
+                <div class="form-group">
+                    <select class="form-control" id="searchType" name="searchType">
+                        <option value="none" selected>--전체--</option>
+                        <option value="userTeam">부서</option>
+                        <option value="userLevel">직급</option>
+                        <option value="name">이름</option>
+                    </select>
+                    <input type="hidden" id="searchValue" name="searchValue"/>
+                    <button id="btn-search" type="submit" class="btn btn-primary">검색</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<div th:replace="layout/footer" th:remove="tag"></div>
+<script th:src="@{/js/admin/admin.js}"></script>
+</body>
+</html>
