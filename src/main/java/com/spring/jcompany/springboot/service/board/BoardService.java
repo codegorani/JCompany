@@ -26,6 +26,11 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
+    /**
+     * Database에 board를 저장
+     * @param requestDto 요청 파라미터를 담고 있는 Dto
+     * @return 저장된 board의 데이터베이스상 id
+     */
     @Transactional
     public Long boardSaveService(BoardSaveRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("User Not Found"));

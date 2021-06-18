@@ -8,6 +8,9 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+/**
+ * @see Documents 메인 entity
+ */
 @Getter
 public class DocumentsDetailResponseDto {
     private Long id;

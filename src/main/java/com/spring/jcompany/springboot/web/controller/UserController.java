@@ -78,7 +78,9 @@ public class UserController {
     }
 
     @GetMapping("/menu/user/pw/{id}")
-    public String userPasswordChangePage(@PathVariable("id") Long id) {
+    public String userPasswordChangePage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("userId", userService.findUserId(id));
         return "menu/user/user-password";
     }
+
 }

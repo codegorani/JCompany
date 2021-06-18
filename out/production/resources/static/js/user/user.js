@@ -20,6 +20,18 @@ const user = {
             _this.passwordEqual();
         });
 
+        $('#newPass').on('keyup', function() {
+            _this.passwordChangeValidate();
+        });
+
+        $('#newPassCheck').on('keyup', function() {
+            _this.passwordChangeEqual();
+        });
+
+        $('#btn-password-change').on('click', function() {
+            _this.changePassword();
+        })
+
         $('#birth-day').on('change', function () {
             _this.birthValidate();
         });
@@ -137,6 +149,52 @@ const user = {
         }
 
     },
+    passwordChangeEqual: function () {
+        const myPassword = $('#newPass').val();
+        const confirmPassword = $('#newPassCheck').val();
+        if (myPassword !== confirmPassword) {
+            $('#password-warn').css('display', 'block');
+            $('#password-confirm-good').css('display', 'none');
+            isConfirmPassword = false;
+        } else {
+            $('#password-warn').css('display', 'none');
+            $('#password-confirm-good').css('display', 'block');
+            //$('#password').attr('readonly', true);
+            isConfirmPassword = true;
+        }
+    },
+    passwordChangeValidate: function () {
+        const password = $('#newPass').val();
+
+        const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+
+        let isGoodPattern;
+        let isGoodLength;
+
+        if (passwordPattern.test(password)) {
+            $('#password-warning').css('display', 'none');
+            isGoodPattern = true;
+        } else {
+            $('#password-warning').css('display', 'block');
+            isGoodPattern = false;
+        }
+        if (password.length < 9 || password.length > 13) {
+            $('#password-length-warning').css('display', 'block');
+            isGoodLength = false;
+        } else {
+            $('#password-length-warning').css('display', 'none');
+            isGoodLength = true;
+        }
+
+        if (isGoodLength && isGoodPattern) {
+            $('#password-good').css('display', 'block');
+            isPassword = true;
+        } else {
+            $('#password-good').css('display', 'none');
+            isPassword = false;
+        }
+
+    },
     birthValidate: function () {
         const birthYear = $('#birth-year option:selected').val();
         const birthMonth = $('#birth-month option:selected').val();
@@ -223,6 +281,32 @@ const user = {
             alert('계정 삭제 완료');
             window.location.href = '/logout';
         }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    changePassword: function() {
+        const id = $('#btn-password-change').data('id');
+
+        const data = {
+            'id' : id,
+            'password' : $('#curPass').val(),
+            'newPassword' : $('#newPass').val()
+        };
+
+        $.ajax({
+            url: '/user/password',
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data)
+        }).done(function(data) {
+            if(data === 0 || data === '0') {
+                alert('패스워드가 일치하지 않습니다. 다시확인해주세요.');
+            } else {
+                alert('패스워드가 변경되었습니다. 다시 로그인 해주세요.')
+                window.location.href = '/logout';
+            }
+        }).fail(function(error) {
             alert(JSON.stringify(error));
         });
     }

@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = "2.4.0"
+        springBootVersion = "2.4.0" as Object
     }
     repositories {
         mavenCentral()
@@ -40,5 +40,5 @@ dependencies {
     testCompile("org.springframework.security:spring-security-test")
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-
+    compile("org.springframework.boot:spring-boot-starter-batch")
 }

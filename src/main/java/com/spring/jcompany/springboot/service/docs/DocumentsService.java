@@ -81,4 +81,11 @@ public class DocumentsService {
                 .orElseThrow(() -> new IllegalArgumentException("Documents Not Found"));
         doc.statusUpdate(DocumentsStatus.APPROVAL_DONE);
     }
+
+    @Transactional
+    public void documentsApprovalReturnService(Long id) {
+        Documents doc = documentsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Documents Not Found"));
+        doc.statusUpdate(DocumentsStatus.COMPANION);
+    }
 }

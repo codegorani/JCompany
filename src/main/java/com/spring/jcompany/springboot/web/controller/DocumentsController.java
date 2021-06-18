@@ -54,6 +54,12 @@ public class DocumentsController {
         return "redirect:/documents/list/tome";
     }
 
+    @GetMapping("/api/docs/approval/return/{id}")
+    public String documentsApprovalReturnRequestControl(@PathVariable("id") Long id) {
+        documentsService.documentsApprovalReturnService(id);
+        return "redirect:/documents/list/tome";
+    }
+
     @GetMapping("/api/docs/me/{id}")
     public String documentsDetailMyPage(@PathVariable("id") Long id, Model model) {
         model.addAttribute("doc", documentsService.documentsMyDetailService(id));

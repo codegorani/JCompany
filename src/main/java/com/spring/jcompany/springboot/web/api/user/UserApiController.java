@@ -1,6 +1,7 @@
 package com.spring.jcompany.springboot.web.api.user;
 
 import com.spring.jcompany.springboot.domain.user.UserTeam;
+import com.spring.jcompany.springboot.domain.user.dto.UserPasswordRequestDto;
 import com.spring.jcompany.springboot.domain.user.dto.UserSaveRequestDto;
 import com.spring.jcompany.springboot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,10 @@ public class UserApiController {
     public String emailValid(@RequestBody String email) {
         System.out.println(email);
         return userService.isEmailValid(email);
+    }
+
+    @PostMapping("/user/password")
+    public Long userPasswordChangeControl(@RequestBody UserPasswordRequestDto requestDto) {
+        return userService.userPasswordChange(requestDto);
     }
 }

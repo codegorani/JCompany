@@ -14,6 +14,7 @@
                 <th>제목</th>
                 <th>세부내용</th>
                 <th>승인</th>
+                <th>반려</th>
             </tr>
             </thead>
             <tbody>
@@ -24,6 +25,7 @@
                 <td th:text="${doc.title}"></td>
                 <td th:text="${doc.content}"></td>
                 <td><a th:href="@{/api/docs/approval/{id}(id=${doc.id})}">결재승인</a></td>
+                <td><a th:href="@{/api/docs/approval/return/{id}(id=${doc.id})}">반려</a></td>
             </tr>
             </tbody>
         </table>

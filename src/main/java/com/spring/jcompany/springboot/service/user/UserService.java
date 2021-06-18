@@ -4,6 +4,7 @@ import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
 import com.spring.jcompany.springboot.domain.user.dto.SessionUser;
 import com.spring.jcompany.springboot.domain.user.dto.UserInfoResponseDto;
+import com.spring.jcompany.springboot.domain.user.dto.UserPasswordRequestDto;
 import com.spring.jcompany.springboot.domain.user.dto.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,5 +87,23 @@ public class UserService implements UserDetailsService {
             valid = "invalid";
         }
         return valid;
+    }
+
+    @Transactional
+    public Long userPasswordChange(UserPasswordRequestDto requestDto) {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        User user = userRepository.findById(requestDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        if(!encoder.matches(requestDto.getPassword(), user.getPassword())) {
+            return 0L;
+        }
+        user.passwordUpdate(encoder.encode(requestDto.getNewPassword()));
+        return user.getId();
+    }
+
+    @Transactional
+    public Long findUserId(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"))
+                .getId();
     }
 }
