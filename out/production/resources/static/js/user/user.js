@@ -100,7 +100,23 @@ const user = {
                 e.preventDefault();
                 alert('가입이 완료되었습니다.');
             }
-        })
+        });
+
+        $('#btn-forgot-email').on('click', function() {
+            _this.forgotEmail();
+        });
+
+        $('#btn-email-exist').on('click', function() {
+            _this.emailExist();
+        });
+
+        $('#btn-forgot-password').on('click', function() {
+            _this.forgotPassword();
+        });
+
+        $('#btn-password-forgot-change').on('click', function() {
+            _this.changePasswordAsForgot();
+        });
     }
     ,
     passwordEqual: function () {
@@ -309,6 +325,97 @@ const user = {
         }).fail(function(error) {
             alert(JSON.stringify(error));
         });
+    },
+    forgotEmail : function() {
+        const data = {
+            'name' : $('#name').val(),
+            'birth' : $('#birth').val()
+        };
+
+        $.ajax({
+            url: '/forgot/email/req',
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'text',
+            data: JSON.stringify(data)
+        }).done(function(data) {
+            if(data === '1' || data === 1) {
+                alert('이메일이 존재하지 않습니다.')
+            } else if(data === '0' || data === 0) {
+                alert('정보를 다시 확인해주세요.')
+            } else {
+                alert('이메일 주소는 ' + data + ' 입니다. 로그인해주세요');
+                window.location.href = '/login/' + data;
+            }
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+        })
+    },
+    emailExist: function() {
+        const email = $('#email').val();
+
+        $.ajax({
+            url: '/forgot/password/email',
+            method: 'POST',
+            contentType: 'text/plain; charset=utf-8',
+            dataType: 'text',
+            data: email
+        }).done(function(data) {
+            if(data === '0' || data === 0) {
+                const find = confirm('존재하지 않는 이메일입니다. 이메일을 찾으시겠습니까?')
+                if(find) {
+                    window.location.href = '/forgot/email';
+                }
+            } else {
+                $('#question').attr('value', data);
+                $('#div-email-isExist').css('display', 'block');
+                $('#btn-forgot-password').css('display', 'block');
+                alert('질문에 답변을 해주세요');
+            }
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+        })
+    },
+    forgotPassword: function() {
+        const data = {
+            'email': $('#email').val(),
+            'answer': $('#answer').val()
+        };
+
+        $.ajax({
+            url: '/forgot/password/req',
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'text',
+            data: JSON.stringify(data)
+        }).done(function(data) {
+            if(data === '0' || data === 0) {
+                alert('질문과 답변이 일치하지 않습니다.');
+            } else {
+                window.location.href = '/forgot/password/page/' + data;
+            }
+        })
+    },
+    changePasswordAsForgot: function() {
+        const data = {
+            'email': $('#email').val(),
+            'password': $('#newPass').val()
+        };
+
+        $.ajax({
+            url: '/forgot/password/recreate',
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('패스워드 변경 완료 로그인 해주세요');
+            window.location.href = '/login';
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+        })
+
+
     }
 }
 

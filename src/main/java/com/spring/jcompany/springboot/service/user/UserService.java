@@ -2,10 +2,7 @@ package com.spring.jcompany.springboot.service.user;
 
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
-import com.spring.jcompany.springboot.domain.user.dto.SessionUser;
-import com.spring.jcompany.springboot.domain.user.dto.UserInfoResponseDto;
-import com.spring.jcompany.springboot.domain.user.dto.UserPasswordRequestDto;
-import com.spring.jcompany.springboot.domain.user.dto.UserSaveRequestDto;
+import com.spring.jcompany.springboot.domain.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,5 +103,53 @@ public class UserService implements UserDetailsService {
     public Long findUserId(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"))
                 .getId();
+    }
+
+    @Transactional
+    public String findForgotEmail(UserForgotEmailRequestDto requestDto) {
+        User user = userRepository.findByName(requestDto.getName())
+                .orElse(null);
+        if(user == null) {
+            return "1";
+        }
+        String birth = requestDto.getBirth();
+        LocalDateTime birthDay = LocalDateTime.of(Integer.parseInt(birth.substring(0, 4)),
+                Integer.parseInt(birth.substring(4, 6)),
+                Integer.parseInt(birth.substring(6)), 0, 0, 0);
+        if(user.getBirth().equals(birthDay)) {
+            return user.getEmail();
+        } else {
+            return "0";
+        }
+    }
+
+    @Transactional
+    public String findForgotPassword(UserForgotPasswordRequestDto requestDto) {
+        User user = userRepository.findByEmail(requestDto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Email Not Found"));
+        if(user.getAnswer().equals(requestDto.getAnswer())) {
+            return user.getEmail();
+        } else {
+            return "0";
+        }
+    }
+
+    @Transactional
+    public void userPasswordChangeAsForgot(UserForgotPasswordRecreateDto recreateDto) {
+        User user = userRepository.findByEmail(recreateDto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Email Not Found"));
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.passwordUpdate(encoder.encode(recreateDto.getPassword()));
+    }
+
+    @Transactional
+    public String isEmailExist(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElse(null);
+        if(user == null) {
+            return "0";
+        } else {
+            return user.getQuestion();
+        }
     }
 }

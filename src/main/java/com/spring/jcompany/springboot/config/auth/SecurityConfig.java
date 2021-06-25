@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().headers().frameOptions().disable();
 
         http.authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/images/**", "/", "/signup", "/api/ip", "/emailValid", "/swagger-ui.html",  "/v2/**", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/webjars/**", "/swagger**").permitAll()
+                .antMatchers("/user/forgot/password", "/forgot/**", "/css/**", "/js/**", "/images/**", "/", "/signup", "/api/ip", "/emailValid", "/swagger-ui.html",  "/v2/**", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/webjars/**", "/swagger**").permitAll()
                 .antMatchers("/api/v1/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.USER_MANAGER.name(),Role.DEVELOPER.name())
                 .antMatchers("/admin/**").hasAnyRole(Role.ADMIN.name(), Role.DEVELOPER.name())
                 .antMatchers("/manager/**").hasAnyRole(Role.ADMIN.name(), Role.DEVELOPER.name(), Role.USER_MANAGER.name())

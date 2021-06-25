@@ -30,6 +30,12 @@ public class UserController {
         return "menu/login/login";
     }
 
+    @GetMapping("/login/{email}")
+    public String forgotLoginPage(@PathVariable("email") String email, Model model) {
+        model.addAttribute("email", email);
+        return "menu/login/login";
+    }
+
     @GetMapping("/signup")
     public String signupPage() {
         return "menu/login/signup";
@@ -83,4 +89,24 @@ public class UserController {
         return "menu/user/user-password";
     }
 
+    @GetMapping("/forgot")
+    public String userForgotPage() {
+        return "menu/user/forgot";
+    }
+
+    @GetMapping("/forgot/email")
+    public String userEmailForgotPage() {
+        return "menu/user/forgot-email";
+    }
+
+    @GetMapping("/forgot/password")
+    public String userPasswordForgotPage() {
+        return "menu/user/forgot-password";
+    }
+
+    @GetMapping("/forgot/password/page/{email}")
+    public String userPasswordForgotChangePage(@PathVariable("email") String email, Model model) {
+        model.addAttribute("email", email);
+        return "menu/user/forgot-password-change";
+    }
 }

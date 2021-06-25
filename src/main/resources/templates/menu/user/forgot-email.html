@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+<div class="col col-md-12">
+    <div class="col col-md-6">
+        <form>
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" class="form-control" id="name"/>
+            </div>
+            <div class="form-group">
+                <label for="birth">생년월일</label><br/>
+                <select id="birth-year" class="form-select">
+                    <option value="none" selected>--선택--</option>
+                    <option th:each="num, numStat:${#numbers.sequence(2020, 1900)}" th:value="${numStat.current}"
+                            th:text="${numStat.current}"></option>
+                </select><label for="birth-year">년</label>
+                <select id="birth-month" class="form-select">
+                    <option value="none" selected>--선택--</option>
+                    <option th:each="num, numStat:${#numbers.sequence(1, 12)}" th:value="${numStat.current}"
+                            th:text="${numStat.current}"></option>
+                </select><label for="birth-month">월</label>
+                <select id="birth-day" class="form-select">
+                    <option value="none" selected>--선택--</option>
+                    <option th:each="num, numStat:${#numbers.sequence(1, 31)}" th:value="${numStat.current}"
+                            th:text="${numStat.current}"></option>
+                </select><label for="birth-day">일</label>
+                <p id="birth-warn" style="display: none; color: red">생년월일이 올바르지 않습니다.</p>
+                <p id="birth-good" style="display: none; color: limegreen">생년월일이 확인되었습니다.</p>
+                <input type="hidden" name="birth" id="birth" class="form-control"/>
+            </div>
+        </form>
+        <button type="button" class="btn btn-primary" id="btn-forgot-email">이메일 찾기</button>
+    </div>
+</div>
+<div th:replace="layout/footer" th:remove="tag"></div>
+<script th:src="@{/js/user/user.js}"></script>
+</body>
+</html>

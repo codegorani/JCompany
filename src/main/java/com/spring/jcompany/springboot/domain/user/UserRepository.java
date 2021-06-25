@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+    Optional<User> findByName(String name);
 
     @Query("SELECT u FROM User u ORDER BY u.userLevel asc, u.userTeam desc")
     List<User> findAllDesc();
