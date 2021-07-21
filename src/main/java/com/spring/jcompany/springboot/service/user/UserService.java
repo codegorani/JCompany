@@ -1,8 +1,10 @@
 package com.spring.jcompany.springboot.service.user;
 
+import com.spring.jcompany.springboot.domain.mail.MailDto;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
 import com.spring.jcompany.springboot.domain.user.dto.*;
+import com.spring.jcompany.springboot.service.mail.SimpleMailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +31,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final HttpSession httpSession;
+    private final SimpleMailService mailService;
 
     @Transactional
     public void userSaveService(UserSaveRequestDto requestDto) {
@@ -153,5 +157,28 @@ public class UserService implements UserDetailsService {
         } else {
             return user.getQuestion();
         }
+    }
+
+    @Transactional
+    public void sendRandomPassword(Long id) {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No User"));
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit,rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        user.passwordUpdate(encoder.encode(generatedString));
+        user.dormantUpdate(false);
+        MailDto mail = MailDto.builder().address(user.getEmail()).title("휴면 계정 신규 패스워드 안내")
+                .message("초기화된 패스워드는 <strong>" + generatedString + "</strong> 입니다.")
+                .build();
+        mailService.mailSend(mail);
     }
 }

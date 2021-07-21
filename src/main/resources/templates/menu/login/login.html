@@ -8,6 +8,9 @@
         <div class="alert alert-danger" role="alert" th:if="${isError}">
             로그인 정보가 올바르지 않습니다. 다시 시도해주십시오.
         </div>
+        <div class="alert alert-danger" role="alert" th:if="${isDormant}">
+            해당아이디는 휴면계정으로 초기화된 패스워드가 이메일로 전송되었습니다.
+        </div>
         <form th:action="@{/login}" method="POST">
             <div class="form-group">
                 <label for="username">이메일</label>

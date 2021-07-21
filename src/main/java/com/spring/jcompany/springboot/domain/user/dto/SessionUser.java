@@ -18,6 +18,7 @@ public class SessionUser implements Serializable {
     private Role role;
     private UserTeam userTeam;
     private UserLevel userLevel;
+    private boolean dormant;
 
     public SessionUser(User entity) {
         this.id = entity.getId();
@@ -27,5 +28,6 @@ public class SessionUser implements Serializable {
         this.role = entity.getRole();
         this.userTeam = entity.getUserTeam();
         this.userLevel = entity.getUserLevel();
+        this.dormant = entity.isDormant();
     }
 }

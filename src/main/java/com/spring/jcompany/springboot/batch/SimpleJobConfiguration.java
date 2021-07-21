@@ -1,5 +1,6 @@
 package com.spring.jcompany.springboot.batch;
 
+import com.spring.jcompany.springboot.domain.user.UserRepositorySupport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 public class SimpleJobConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+    private final UserRepositorySupport userRepositorySupport;
 
     @Bean
     public Job simpleJob() {

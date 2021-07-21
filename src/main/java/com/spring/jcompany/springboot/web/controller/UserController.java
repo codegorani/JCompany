@@ -6,15 +6,25 @@ import com.spring.jcompany.springboot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -26,7 +36,14 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(HttpServletRequest request, Model model) {
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if(flashMap == null) {
+            return "menu/login/login";
+        }
+        if(!flashMap.isEmpty()) {
+            model.addAttribute("isDormant", true);
+        }
         return "menu/login/login";
     }
 
@@ -108,5 +125,15 @@ public class UserController {
     public String userPasswordForgotChangePage(@PathVariable("email") String email, Model model) {
         model.addAttribute("email", email);
         return "menu/user/forgot-password-change";
+    }
+
+    @GetMapping("/logout/dormant")
+    public RedirectView logoutDormant(HttpServletRequest request, HttpServletResponse response, RedirectAttributes attributes) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        attributes.addFlashAttribute("isDormant", true);
+        return new RedirectView("/login", true);
     }
 }
