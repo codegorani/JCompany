@@ -2,10 +2,7 @@ package com.spring.jcompany.springboot.service.admin;
 
 import com.spring.jcompany.springboot.domain.todo.board.BoardRepository;
 import com.spring.jcompany.springboot.domain.todo.board.dto.BoardListResponseDto;
-import com.spring.jcompany.springboot.domain.user.User;
-import com.spring.jcompany.springboot.domain.user.UserLevel;
-import com.spring.jcompany.springboot.domain.user.UserRepository;
-import com.spring.jcompany.springboot.domain.user.UserTeam;
+import com.spring.jcompany.springboot.domain.user.*;
 import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserListResponseDto;
 import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserResponseDto;
 import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserUpdateRequestDto;
@@ -33,10 +30,11 @@ public class AdminService {
     private final BoardRepository boardRepository;
     private final UserService userService;
     private final SimpleMailService simpleMailService;
+    private final UserRepositorySupport userRepositorySupport;
 
     @Transactional
     public List<AdminRequestUserListResponseDto> adminFindAllUserService() {
-        return userRepository.findAllDesc().stream()
+        return userRepositorySupport.findAllDesc().stream()
                 .map(AdminRequestUserListResponseDto::new).collect(Collectors.toList());
     }
 
@@ -144,7 +142,7 @@ public class AdminService {
 
     @Transactional
     public List<AdminRequestUserListResponseDto> adminFindAllUserByName(String name) {
-        return userRepository.findAllByName(name).stream()
+        return userRepositorySupport.findAllByName(name).stream()
                 .map(AdminRequestUserListResponseDto::new).collect(Collectors.toList());
     }
 }

@@ -2,6 +2,7 @@ package com.spring.jcompany.springboot.service.docs;
 
 import com.spring.jcompany.springboot.domain.docs.Documents;
 import com.spring.jcompany.springboot.domain.docs.DocumentsRepository;
+import com.spring.jcompany.springboot.domain.docs.DocumentsRepositorySupport;
 import com.spring.jcompany.springboot.domain.docs.DocumentsStatus;
 import com.spring.jcompany.springboot.domain.docs.dto.DocumentsDetailResponseDto;
 import com.spring.jcompany.springboot.domain.docs.dto.DocumentsListResponseDto;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public class DocumentsService {
     private final UserRepository userRepository;
     private final DocumentsRepository documentsRepository;
+    private final DocumentsRepositorySupport documentsRepositorySupport;
 
     @Transactional
     public List<DocumentsApprovalUserResponseDto> documentsApprovalListService(SessionUser user) {
@@ -47,7 +49,7 @@ public class DocumentsService {
     @Transactional
     public List<DocumentsListResponseDto> documentsToMeListService(Long id) {
         User approval = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No User"));
-        return documentsRepository.findAllByApproval(approval).stream()
+        return documentsRepositorySupport.findAllByApproval(approval).stream()
                 .map(DocumentsListResponseDto::new).collect(Collectors.toList());
     }
 

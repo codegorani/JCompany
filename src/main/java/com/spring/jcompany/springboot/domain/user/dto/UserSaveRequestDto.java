@@ -49,6 +49,8 @@ public class UserSaveRequestDto {
                 .answer(answer)
                 .userTeam(userTeam)
                 .userLevel(UserLevel.DD_INTERN)
+                .dormant(false)
+                .lastLoginTime(LocalDateTime.now())
                 .build();
     }
 }

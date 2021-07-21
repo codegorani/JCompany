@@ -63,9 +63,16 @@ public class User {
     @OneToMany(mappedBy = "approval")
     private List<Documents> approvalList;
 
+    @Column
+    private LocalDateTime lastLoginTime;
+
+    @Column
+    private boolean dormant;
+
     @Builder
     public User(Role role, String email, String password, String name, String picture,
-                LocalDateTime birth, String question, String answer, UserTeam userTeam, UserLevel userLevel) {
+                LocalDateTime birth, String question, String answer, UserTeam userTeam,
+                UserLevel userLevel, LocalDateTime lastLoginTime, boolean dormant) {
         this.role = role;
         this.email = email;
         this.password = password;
@@ -76,6 +83,8 @@ public class User {
         this.answer = answer;
         this.userTeam = userTeam;
         this.userLevel = userLevel;
+        this.lastLoginTime = lastLoginTime;
+        this.dormant = dormant;
     }
 
     public User update(String name, String picture, LocalDateTime birth) {
@@ -96,5 +105,13 @@ public class User {
 
     public void passwordUpdate(String password) {
         this.password = password;
+    }
+
+    public void dormantUpdate(boolean dormant) {
+        this.dormant = dormant;
+    }
+
+    public void loggedIn(LocalDateTime lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 }
