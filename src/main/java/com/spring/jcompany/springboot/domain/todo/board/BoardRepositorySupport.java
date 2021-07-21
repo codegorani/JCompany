@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.spring.jcompany.springboot.domain.todo.board.QBoard.board;
 
@@ -16,6 +17,13 @@ public class BoardRepositorySupport extends QuerydslRepositorySupport {
     public BoardRepositorySupport(JPAQueryFactory queryFactory) {
         super(Board.class);
         this.queryFactory = queryFactory;
+    }
+
+    public Optional<Board> findById(Long id) {
+        return queryFactory
+                .selectFrom(board)
+                .where(board.id.eq(id))
+                .fetch().stream().findAny();
     }
 
     public List<Board> findAllDesc(User user) {

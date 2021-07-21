@@ -30,7 +30,8 @@ public class BoardController {
     }
 
     @GetMapping("/menu/todo/{id}")
-    public String viewBoardPage(@PathVariable("id") Long id, Model model) {
+    public String viewBoardPage(@PathVariable("id") Long id, Model model, @LoginUser SessionUser user) {
+        model.addAttribute("loginUser", user);
         model.addAttribute("board", boardService.boardViewService(id));
         return "menu/todo/board-view";
     }

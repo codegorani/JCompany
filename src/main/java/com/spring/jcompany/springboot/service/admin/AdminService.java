@@ -1,6 +1,7 @@
 package com.spring.jcompany.springboot.service.admin;
 
 import com.spring.jcompany.springboot.domain.todo.board.BoardRepository;
+import com.spring.jcompany.springboot.domain.todo.board.BoardRepositorySupport;
 import com.spring.jcompany.springboot.domain.todo.board.dto.BoardListResponseDto;
 import com.spring.jcompany.springboot.domain.user.*;
 import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserListResponseDto;
@@ -28,9 +29,8 @@ public class AdminService {
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
-    private final UserService userService;
-    private final SimpleMailService simpleMailService;
     private final UserRepositorySupport userRepositorySupport;
+    private final BoardRepositorySupport boardRepositorySupport;
 
     @Transactional
     public List<AdminRequestUserListResponseDto> adminFindAllUserService() {
@@ -40,7 +40,7 @@ public class AdminService {
 
     @Transactional
     public void adminUserDeleteService(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        User user = userRepositorySupport.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         String path = "C:\\Users\\USER\\Documents\\GitHub\\JCompany\\src\\main\\resources\\static\\images\\user\\" + user.getEmail() + user.getBirth().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         System.out.println(path);
         File folder = new File(path);
@@ -65,7 +65,7 @@ public class AdminService {
     @Transactional
     public Long adminUserPasswordResetService(Long id) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        User user = userRepositorySupport.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         /* java mail send service (not allowed)
         MailDto mailDto = new MailDto();
         mailDto.setTitle("초기화된 패스워드를 안내합니다.");
@@ -79,18 +79,18 @@ public class AdminService {
 
     @Transactional
     public List<BoardListResponseDto> adminFindAllBoardService() {
-        return boardRepository.findAllDescByAdmin().stream()
+        return boardRepositorySupport.findAllDescByAdmin().stream()
                 .map(BoardListResponseDto::new).collect(Collectors.toList());
     }
 
     @Transactional
     public AdminRequestUserResponseDto adminFindUserByIdService(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        User user = userRepositorySupport.findById(id).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         return new AdminRequestUserResponseDto(user);
     }
 
     public void adminUserUpdateService(AdminRequestUserUpdateRequestDto requestDto) throws IOException {
-        User user = userRepository.findById(requestDto.getId()).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        User user = userRepositorySupport.findById(requestDto.getId()).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         if(!requestDto.getPicture().isEmpty()) {
             if (!user.getPicture().equals("none")) {
                 String path = "C:\\Users\\USER\\Documents\\GitHub\\JCompany\\src\\main\\resources\\static\\images\\user\\" + user.getEmail() + user.getBirth().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -130,13 +130,13 @@ public class AdminService {
 
     @Transactional
     public List<AdminRequestUserListResponseDto> adminFindAllUserByUserTeam(UserTeam userTeam) {
-        return userRepository.findAllByUserTeam(userTeam).stream()
+        return userRepositorySupport.findAllByUserTeam(userTeam).stream()
                 .map(AdminRequestUserListResponseDto::new).collect(Collectors.toList());
     }
 
     @Transactional
     public List<AdminRequestUserListResponseDto> adminFindAllUserByUserLevel(UserLevel userLevel) {
-        return userRepository.findAllByUserLevel(userLevel).stream()
+        return userRepositorySupport.findAllByUserLevel(userLevel).stream()
                 .map(AdminRequestUserListResponseDto::new).collect(Collectors.toList());
     }
 

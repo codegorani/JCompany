@@ -18,6 +18,13 @@ public class UserRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
+    public Optional<User> findById(Long id) {
+        return queryFactory
+                .selectFrom(user)
+                .where(user.id.eq(id))
+                .fetch().stream().findAny();
+    }
+
     public Optional<User> findByEmail(String email) {
         return queryFactory
                 .selectFrom(user)

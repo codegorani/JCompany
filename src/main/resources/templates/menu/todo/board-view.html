@@ -21,7 +21,7 @@
     </div>
 </div>
         <hr/><br/>
-        <a href="/menu/todo" role="button" class="btn btn-secondary">뒤로</a>
+        <a th:href="@{/menu/todo-list/{id}(id=${loginUser.id})}" role="button" class="btn btn-secondary">뒤로</a>
         <a th:href="@{/menu/card-save/{id}(id=${board.id})}" role="button" class="btn btn-primary">새카드만들기</a>
     </div>
 </div>
