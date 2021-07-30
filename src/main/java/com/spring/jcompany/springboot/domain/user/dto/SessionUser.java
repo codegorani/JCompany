@@ -1,9 +1,6 @@
 package com.spring.jcompany.springboot.domain.user.dto;
 
-import com.spring.jcompany.springboot.domain.user.Role;
-import com.spring.jcompany.springboot.domain.user.User;
-import com.spring.jcompany.springboot.domain.user.UserLevel;
-import com.spring.jcompany.springboot.domain.user.UserTeam;
+import com.spring.jcompany.springboot.domain.user.*;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -18,7 +15,7 @@ public class SessionUser implements Serializable {
     private Role role;
     private UserTeam userTeam;
     private UserLevel userLevel;
-    private boolean dormant;
+    private UserStatus status;
 
     public SessionUser(User entity) {
         this.id = entity.getId();
@@ -28,6 +25,6 @@ public class SessionUser implements Serializable {
         this.role = entity.getRole();
         this.userTeam = entity.getUserTeam();
         this.userLevel = entity.getUserLevel();
-        this.dormant = entity.isDormant();
+        this.status = entity.getStatus();
     }
 }

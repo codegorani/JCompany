@@ -3,6 +3,7 @@ package com.spring.jcompany.springboot.service.user;
 import com.spring.jcompany.springboot.domain.mail.MailDto;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
+import com.spring.jcompany.springboot.domain.user.UserStatus;
 import com.spring.jcompany.springboot.domain.user.dto.*;
 import com.spring.jcompany.springboot.service.mail.SimpleMailService;
 import lombok.RequiredArgsConstructor;
@@ -175,7 +176,7 @@ public class UserService implements UserDetailsService {
                 .toString();
 
         user.passwordUpdate(encoder.encode(generatedString));
-        user.dormantUpdate(false);
+        user.statusUpdate(UserStatus.ACTIVE);
         MailDto mail = MailDto.builder().address(user.getEmail()).title("휴면 계정 신규 패스워드 안내")
                 .message("초기화된 패스워드는 <strong>" + generatedString + "</strong> 입니다.")
                 .build();

@@ -1,9 +1,6 @@
 package com.spring.jcompany.springboot.domain.user.dto;
 
-import com.spring.jcompany.springboot.domain.user.Role;
-import com.spring.jcompany.springboot.domain.user.User;
-import com.spring.jcompany.springboot.domain.user.UserLevel;
-import com.spring.jcompany.springboot.domain.user.UserTeam;
+import com.spring.jcompany.springboot.domain.user.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,7 +46,7 @@ public class UserSaveRequestDto {
                 .answer(answer)
                 .userTeam(userTeam)
                 .userLevel(UserLevel.DD_INTERN)
-                .dormant(false)
+                .status(UserStatus.ACTIVE)
                 .lastLoginTime(LocalDateTime.now())
                 .build();
     }

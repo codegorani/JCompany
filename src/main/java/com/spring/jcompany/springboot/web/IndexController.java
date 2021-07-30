@@ -1,6 +1,7 @@
 package com.spring.jcompany.springboot.web;
 
 import com.spring.jcompany.springboot.config.auth.LoginUser;
+import com.spring.jcompany.springboot.domain.user.UserStatus;
 import com.spring.jcompany.springboot.domain.user.dto.SessionUser;
 import com.spring.jcompany.springboot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class IndexController {
     public String index(Model model, @LoginUser SessionUser user, RedirectAttributes attributes) {
         if(user != null) {
             model.addAttribute("loginUser", user);
-            if(user.isDormant()) {
+            if(user.getStatus().equals(UserStatus.INACTIVE)) {
                 userService.sendRandomPassword(user.getId());
                 return "redirect:/logout/dormant";
             }

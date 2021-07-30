@@ -2,7 +2,6 @@ package com.spring.jcompany.springboot.domain.user;
 
 import com.spring.jcompany.springboot.domain.docs.Documents;
 import com.spring.jcompany.springboot.domain.todo.board.Board;
-import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -67,12 +66,13 @@ public class User {
     private LocalDateTime lastLoginTime;
 
     @Column
-    private boolean dormant;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
 
     @Builder
     public User(Role role, String email, String password, String name, String picture,
                 LocalDateTime birth, String question, String answer, UserTeam userTeam,
-                UserLevel userLevel, LocalDateTime lastLoginTime, boolean dormant) {
+                UserLevel userLevel, LocalDateTime lastLoginTime, UserStatus status) {
         this.role = role;
         this.email = email;
         this.password = password;
@@ -84,7 +84,7 @@ public class User {
         this.userTeam = userTeam;
         this.userLevel = userLevel;
         this.lastLoginTime = lastLoginTime;
-        this.dormant = dormant;
+        this.status = status;
     }
 
     public User update(String name, String picture, LocalDateTime birth) {
@@ -107,8 +107,13 @@ public class User {
         this.password = password;
     }
 
-    public void dormantUpdate(boolean dormant) {
-        this.dormant = dormant;
+    public User inactive() {
+        this.status = UserStatus.INACTIVE;
+        return this;
+    }
+
+    public void statusUpdate(UserStatus status) {
+        this.status = status;
     }
 
     public void loggedIn(LocalDateTime lastLoginTime) {

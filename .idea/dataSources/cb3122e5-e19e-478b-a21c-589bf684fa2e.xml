@@ -1503,17 +1503,25 @@ JOB_KEY</ColNames>
       <Position>11</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <index id="427" parent="299" name="UK_ob8kqyqqgmefl0aco34akdtpe">
+    <column id="427" parent="299" name="last_login_time">
+      <Position>12</Position>
+      <DataType>datetime(6)|0s</DataType>
+    </column>
+    <column id="428" parent="299" name="status">
+      <Position>13</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <index id="429" parent="299" name="UK_ob8kqyqqgmefl0aco34akdtpe">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="428" parent="299" name="PRIMARY">
+    <key id="430" parent="299" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="429" parent="299" name="UK_ob8kqyqqgmefl0aco34akdtpe">
+    <key id="431" parent="299" name="UK_ob8kqyqqgmefl0aco34akdtpe">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>UK_ob8kqyqqgmefl0aco34akdtpe</UnderlyingIndexName>
     </key>
