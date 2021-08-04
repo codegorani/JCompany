@@ -1,5 +1,7 @@
 package com.spring.jcompany.springboot.web.controller;
 
+import com.spring.jcompany.springboot.domain.user.User;
+import com.spring.jcompany.springboot.domain.user.UserStatus;
 import com.spring.jcompany.springboot.domain.user.UserTeam;
 import com.spring.jcompany.springboot.domain.user.dto.UserSaveRequestDto;
 import com.spring.jcompany.springboot.service.user.UserService;
@@ -19,7 +21,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -124,6 +125,7 @@ public class UserController {
     @GetMapping("/forgot/password/page/{email}")
     public String userPasswordForgotChangePage(@PathVariable("email") String email, Model model) {
         model.addAttribute("email", email);
+        model.addAttribute("status", userService.findUserByEmail(email).getStatus());
         return "menu/user/forgot-password-change";
     }
 
@@ -135,5 +137,24 @@ public class UserController {
         }
         attributes.addFlashAttribute("isDormant", true);
         return new RedirectView("/login", true);
+    }
+
+    @GetMapping("/inactive/{id}")
+    public String userInactiveRelease(@PathVariable("id") Long id, Model model) {
+        if(userService.findUserById(id).getStatus().equals(UserStatus.WAITING)) {
+            return "redirect:/inactive/reset/" + id;
+        }
+        model.addAttribute("userId", id);
+        return "menu/login/inactive-login";
+    }
+
+    @GetMapping("/inactive/reset/{id}")
+    public String inactiveResetControl(@PathVariable("id") Long id, Model model) {
+        User user = userService.findUserById(id);
+        model.addAttribute("email", user.getEmail());
+        if(user.getStatus().equals(UserStatus.INACTIVE)) {
+            return "redirect:/login";
+        }
+        return "menu/user/forgot-password-change";
     }
 }

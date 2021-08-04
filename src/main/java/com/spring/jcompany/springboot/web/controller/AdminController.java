@@ -1,7 +1,6 @@
 package com.spring.jcompany.springboot.web.controller;
 
 import com.spring.jcompany.springboot.domain.user.Role;
-import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserLevel;
 import com.spring.jcompany.springboot.domain.user.UserTeam;
 import com.spring.jcompany.springboot.domain.user.dto.AdminRequestUserUpdateRequestDto;

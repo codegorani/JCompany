@@ -1,19 +1,15 @@
 package com.spring.jcompany.springboot.batch;
 
-import com.spring.jcompany.springboot.domain.batch.UserBatchRepository;
 import com.spring.jcompany.springboot.domain.user.User;
-import com.spring.jcompany.springboot.domain.user.UserRepository;
 import com.spring.jcompany.springboot.domain.user.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +19,6 @@ import org.springframework.context.annotation.Bean;
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -36,7 +31,7 @@ public class SimpleJobConfiguration {
     @Bean
     public Job inactiveUserJob(JobBuilderFactory jobBuilderFactory, Step inactiveJobStep) {
         return jobBuilderFactory.get("inactiveUserJob")
-                .preventRestart()
+//                .preventRestart()
                 .start(inactiveJobStep)
                 .build();
     }

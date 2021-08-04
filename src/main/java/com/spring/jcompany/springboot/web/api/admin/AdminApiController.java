@@ -1,8 +1,6 @@
 package com.spring.jcompany.springboot.web.api.admin;
 
-import com.spring.jcompany.springboot.domain.mail.MailDto;
 import com.spring.jcompany.springboot.service.admin.AdminService;
-import com.spring.jcompany.springboot.service.mail.SimpleMailService;
 import com.spring.jcompany.springboot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;

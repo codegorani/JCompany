@@ -8,6 +8,10 @@ const user = {
     init: function () {
         const _this = this;
 
+        $('#btn-inactive-check').on('click', function() {
+            _this.inactiveCheck();
+        })
+
         $('#email').on('keyup', function () {
             _this.emailValidate();
         });
@@ -416,7 +420,27 @@ const user = {
         })
 
 
+    },
+    inactiveCheck: function() {
+        const code = $('#code').val();
+        const id = $('#btn-inactive-check').data('id');
+        $.ajax({
+            url: '/inactive/' + id,
+            method: 'POST',
+            contentType: 'text/plain; charset=utf-8',
+            dataType: 'text',
+            data: code
+        }).done(function(data) {
+            if(data === '0' || data === 0) {
+                window.location.href = '/inactive/reset/' + id;
+            } else if(data === '-1' || data === -1) {
+                alert('보안 코드를 다시 확인해주세요.')
+            }
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+        })
     }
+
 }
 
 user.init();

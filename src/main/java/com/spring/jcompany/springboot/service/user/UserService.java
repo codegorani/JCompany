@@ -145,6 +145,9 @@ public class UserService implements UserDetailsService {
     public void userPasswordChangeAsForgot(UserForgotPasswordRecreateDto recreateDto) {
         User user = userRepository.findByEmail(recreateDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Email Not Found"));
+        if(user.getStatus().equals(UserStatus.WAITING)) {
+            user.statusUpdate(UserStatus.ACTIVE);
+        }
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         user.passwordUpdate(encoder.encode(recreateDto.getPassword()));
     }
@@ -162,24 +165,56 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void sendRandomPassword(Long id) {
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No User"));
+
+        String generatedString = generateRandomValue();
+
+        user.setTempCode(generatedString);
+        String msg = "인증번호는 <strong> " + generatedString + "</strong> 입니다.\n";
+        msg += "보안에 각별히 유의 바랍니다. \n";
+        msg += "<a href=\"http://localhost:8080/inactive/" + id + "\">인증페이지 바로가기</a>";
+        MailDto mail = MailDto.builder().address(user.getEmail()).title("휴면 계정 인증번호 안내")
+                .message(msg)
+                .build();
+        mailService.mailSend(mail);
+    }
+
+    @Transactional
+    public String findEmailById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No User")).getEmail();
+    }
+
+    @Transactional
+    public Long isValidCode(Long id, String code) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No User"));
+        if(user.getTempCode().equals(code)) {
+            user.statusUpdate(UserStatus.WAITING);
+            user.setTempCode(generateRandomValue());
+            return 0L;
+        } else {
+            return -1L;
+        }
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No User"));
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("No User"));
+    }
+
+    public String generateRandomValue() {
         int leftLimit = 48; // numeral '0'
         int rightLimit = 122; // letter 'z'
         int targetStringLength = 10;
         Random random = new Random();
 
-        String generatedString = random.ints(leftLimit,rightLimit + 1)
+        return random.ints(leftLimit,rightLimit + 1)
                 .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-
-        user.passwordUpdate(encoder.encode(generatedString));
-        user.statusUpdate(UserStatus.ACTIVE);
-        MailDto mail = MailDto.builder().address(user.getEmail()).title("휴면 계정 신규 패스워드 안내")
-                .message("초기화된 패스워드는 <strong>" + generatedString + "</strong> 입니다.")
-                .build();
-        mailService.mailSend(mail);
     }
 }

@@ -1,20 +1,14 @@
 package com.spring.jcompany.springboot.web.api.user;
 
-import com.spring.jcompany.springboot.domain.user.UserTeam;
-import com.spring.jcompany.springboot.domain.user.dto.*;
+import com.spring.jcompany.springboot.domain.user.dto.UserForgotEmailRequestDto;
+import com.spring.jcompany.springboot.domain.user.dto.UserForgotPasswordRecreateDto;
+import com.spring.jcompany.springboot.domain.user.dto.UserForgotPasswordRequestDto;
+import com.spring.jcompany.springboot.domain.user.dto.UserPasswordRequestDto;
 import com.spring.jcompany.springboot.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
@@ -57,5 +51,10 @@ public class UserApiController {
     @PostMapping("/forgot/password/email")
     public String emailExist(@RequestBody String email) {
         return userService.isEmailExist(email);
+    }
+
+    @PostMapping("/inactive/{id}")
+    public Long inactiveUserCode(@PathVariable("id") Long id, @RequestBody String code) {
+        return userService.isValidCode(id, code);
     }
 }

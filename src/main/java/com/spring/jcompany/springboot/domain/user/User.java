@@ -69,10 +69,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    @Column
+    private String tempCode;
+
     @Builder
     public User(Role role, String email, String password, String name, String picture,
                 LocalDateTime birth, String question, String answer, UserTeam userTeam,
-                UserLevel userLevel, LocalDateTime lastLoginTime, UserStatus status) {
+                UserLevel userLevel, LocalDateTime lastLoginTime, UserStatus status, String tempCode) {
         this.role = role;
         this.email = email;
         this.password = password;
@@ -85,6 +88,7 @@ public class User {
         this.userLevel = userLevel;
         this.lastLoginTime = lastLoginTime;
         this.status = status;
+        this.tempCode = tempCode;
     }
 
     public User update(String name, String picture, LocalDateTime birth) {
@@ -118,5 +122,9 @@ public class User {
 
     public void loggedIn(LocalDateTime lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public void setTempCode(String tempCode) {
+        this.tempCode = tempCode;
     }
 }
