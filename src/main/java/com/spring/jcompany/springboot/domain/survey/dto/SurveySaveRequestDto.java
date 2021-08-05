@@ -2,6 +2,7 @@ package com.spring.jcompany.springboot.domain.survey.dto;
 
 import com.spring.jcompany.springboot.domain.survey.Survey;
 import com.spring.jcompany.springboot.domain.survey.SurveyStatus;
+import com.spring.jcompany.springboot.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 

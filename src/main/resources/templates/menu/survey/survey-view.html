@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+    <div class="col col-md-12">
+        <div class="col col-md-6">
+            <h2 th:text="${survey.surveyName}"> <small th:text="${survey.status.statusName}"></small></h2>
+        </div>
+        <div class="col col-md-6">
+            <p class="lead" th:text="${survey.surveyDetails}"></p>
+        </div>
+        <div class="col col-md-6">
+            <button class="btn-progress btn btn-info"
+                 th:text="'찬성 :' + ${survey.agreeCount} + '표 ' + ${survey.agreeRate} + '%'"
+                 data-type="agree"></button>
+            <button class="btn-progress btn btn-danger"
+                 th:text="'반대 :' + ${survey.disagreeCount}+ '표 ' + ${survey.disagreeRate} + '%'"
+                 data-type="disagree"></button>
+        </div>
+        <br/><br/><br/>
+        <div class="col col-md-6">
+            <a role="button" class="btn btn-secondary" th:href="@{/survey/home}">돌아가기</a>
+            <button th:if="${loginUser.role.key == 'ROLE_ADMIN' || loginUser.role.key == 'ROLE_DEVELOPER'}"
+                    type="button" class="btn btn-danger" id="btn-survey-delete">
+                설문삭제하기
+            </button>
+            <button th:if="${(loginUser.role.key == 'ROLE_ADMIN' || loginUser.role.key == 'ROLE_DEVELOPER')
+            && survey.status.name() == 'WAITING'}" type="button" class="btn btn-primary btn-survey-process">설문시작</button>
+            <button th:if="${(loginUser.role.key == 'ROLE_ADMIN' || loginUser.role.key == 'ROLE_DEVELOPER')
+            && survey.status.name() == 'PROGRESS'}" type="button" class="btn btn-primary btn-survey-process">설문종료</button>
+        </div>
+        <input type="hidden" id="data-group"
+               th:data-survey-id="${survey.id}"
+               th:data-user-id="${loginUser.id}"
+               th:data-survey-status="${survey.status.name()}"/>
+    </div>
+<div th:replace="layout/footer" th:remove="tag"></div>
+<script th:src="@{/js/survey/survey.js}"></script>
+</body>
+</html>

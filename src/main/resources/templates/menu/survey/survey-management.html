@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+    <h4 th:text="${survey.surveyName}"></h4>
+    <h4 th:text="${survey.surveyDetails}"></h4>
+    <h4 th:text="${survey.agreeCount}"></h4>
+    <h4 th:text="${survey.disagreeCount}"></h4>
+    <h3 th:each="user : ${survey.agreeUserName}" th:text="${user}"></h3>
+    <h3 th:each="user : ${survey.disagreeUserName}" th:text="${user}"></h3>
+<div th:replace="layout/footer" th:remove="tag"></div>
+</body>
+</html>

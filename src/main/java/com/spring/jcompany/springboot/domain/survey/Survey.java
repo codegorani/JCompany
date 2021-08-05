@@ -1,9 +1,11 @@
 package com.spring.jcompany.springboot.domain.survey;
 
 import com.spring.jcompany.springboot.domain.global.BaseTimeEntity;
+import com.spring.jcompany.springboot.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -41,9 +43,13 @@ public class Survey extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private SurveyStatus status;
 
+    @ManyToOne
+    private User draftee;
+
     @Builder
     public Survey(String surveyName, String surveyDetails, int agreeCount, int disagreeCount,
-                  String agreeUsersId, String disagreeUsersId, String totalUserId, SurveyStatus status) {
+                  String agreeUsersId, String disagreeUsersId, String totalUserId, SurveyStatus status,
+                  User draftee) {
         this.surveyName = surveyName;
         this.surveyDetails = surveyDetails;
         this.agreeCount = agreeCount;
@@ -52,6 +58,7 @@ public class Survey extends BaseTimeEntity {
         this.disagreeUsersId = disagreeUsersId;
         this.totalUserId = totalUserId;
         this.status = status;
+        this.draftee = draftee;
     }
 
     public Survey agree(Long userId) {
@@ -86,5 +93,10 @@ public class Survey extends BaseTimeEntity {
 
     public void statusUpdate(SurveyStatus status) {
         this.status = status;
+    }
+
+    public Survey setDraftee(User draftee) {
+        this.draftee = draftee;
+        return this;
     }
 }

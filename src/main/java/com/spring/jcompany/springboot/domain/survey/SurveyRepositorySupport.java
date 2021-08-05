@@ -22,7 +22,7 @@ public class SurveyRepositorySupport extends QuerydslRepositorySupport {
     public List<Survey> findAllSurvey() {
         return queryFactory
                 .selectFrom(survey)
-                .orderBy(survey.createdDate.desc())
+                .orderBy(survey.id.desc())
                 .fetch();
     }
 }

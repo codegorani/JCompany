@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+
+    <div class="col col-md-12">
+        <div class="col col-md-6">
+            <table class="table table-boarder table-horizontal">
+                <tr>
+                    <th>번호</th>
+                    <th>설문제목</th>
+                    <th>진행상태</th>
+                    <th>기안자</th>
+                    <th th:if="${loginUser.role.key != 'ROLE_USER'}">설문관리</th>
+                </tr>
+                <tr th:each="survey, i : ${surveyList}">
+                    <td th:text="${i.index + 1}"></td>
+                    <td><a th:text="${survey.surveyName}" th:href="@{/survey/{id}(id=${survey.id})}"></a></td>
+                    <td th:text="${survey.status.statusName}"></td>
+                    <td th:Text="${survey.draftee.userTeam.team + ' ' +
+                    survey.draftee.name + survey.draftee.userLevel.title}"></td>
+                    <td th:if="${loginUser.role.key == 'ROLE_DEVELOPER' || loginUser.role.key == 'ROLE_ADMIN'}">
+                        <a role="button" class="btn btn-warning" th:href="@{/survey/manage/{id}(id=${survey.id})}">관리</a>
+                    </td>
+                </tr>
+            </table>
+            <a th:if="${loginUser.role.key != 'ROLE_USER'}" th:href="@{/survey/create}">설문작성</a>
+        </div>
+    </div>
+<div th:replace="layout/footer" th:remove="tag"></div>
+</body>
+</html>
