@@ -1,6 +1,6 @@
 # JCompany
 
-tech-specifi
+tech-specific
 - springboot2
 - thymeleaf
 - spring-security
