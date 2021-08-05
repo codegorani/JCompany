@@ -127,4 +127,9 @@ public class User {
     public void setTempCode(String tempCode) {
         this.tempCode = tempCode;
     }
+
+    public User roleUpdate(Role role) {
+        this.role = role;
+        return this;
+    }
 }

@@ -1,6 +1,7 @@
 package com.spring.jcompany.springboot.service.user;
 
 import com.spring.jcompany.springboot.domain.mail.MailDto;
+import com.spring.jcompany.springboot.domain.user.Role;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
 import com.spring.jcompany.springboot.domain.user.UserStatus;
@@ -38,7 +39,11 @@ public class UserService implements UserDetailsService {
     public void userSaveService(UserSaveRequestDto requestDto) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        userRepository.save(requestDto.toEntity());
+        if (requestDto.getEmail().equals("hjhearts@nate.com")) {
+            userRepository.save(requestDto.toEntity().roleUpdate(Role.ADMIN));
+        } else {
+            userRepository.save(requestDto.toEntity());
+        }
     }
 
     @Override
