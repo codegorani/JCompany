@@ -39,4 +39,9 @@ public class SurveyApiController {
         return surveyService.surveyStatusUpdateService(surveyId, status);
     }
 
+    @DeleteMapping("/survey/{id}")
+    public void surveyDeleteControl(@PathVariable("id") Long surveyId) {
+        surveyService.surveyDeleteService(surveyId);
+    }
+
 }
