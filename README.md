@@ -1,8 +1,18 @@
 # JCompany
 
-이 프로젝트는 스프링 JPA를 이용한 데이터 관리를 중점적으로 이용하는 프로젝트입니다.
+tech-specific
+- springboot2
+- thymeleaf
+- spring-security
+- spring-jpa, querydsl
+- spring-batch
+- spring-mail
+- swagger
+
+이 프로젝트는 스프링부트2를 중점적으로 이용하는 프로젝트입니다.
 Template Engine으로는 Thymeleaf를 사용하였으며 Database는 MySQL을 사용합니다.
 스프링부트 2.4.0버전을 기준으로 작성하였습니다.
+
 Jpa에서 사용하는 Entity와 기타 요청에 사용되는 Pojo는 각각 그 요청의 용도에 맞게 짜여집니다.
 
 ```java
@@ -51,4 +61,4 @@ public class MyEntityResponseDto{
    }
 }
 ```
-다음과 같은 일련의 규칙을 가집니다.
+다음과 같은 Dto 규칙을 가집니다.
