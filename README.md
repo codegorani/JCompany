@@ -1,6 +1,6 @@
 # JCompany
 
-tech-specific
+### tech-specific
 - springboot2
 - thymeleaf
 - spring-security
@@ -13,7 +13,7 @@ tech-specific
 Template Engine으로는 Thymeleaf를 사용하였으며 Database는 MySQL을 사용합니다.
 스프링부트 2.4.0버전을 기준으로 작성하였습니다.
 
-Jpa에서 사용하는 Entity와 기타 요청에 사용되는 Pojo는 각각 그 요청의 용도에 맞게 짜여집니다.
+Jpa에서 사용하는 `Entity`와 기타 요청에 사용되는 Pojo는 각각 그 요청의 용도에 맞게 짜여집니다.
 
 ```java
 //Entity

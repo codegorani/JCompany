@@ -1,5 +1,6 @@
 package com.spring.jcompany.springboot.domain.user;
 
+import com.spring.jcompany.springboot.domain.bulletin.Bulletin;
 import com.spring.jcompany.springboot.domain.docs.Documents;
 import com.spring.jcompany.springboot.domain.todo.board.Board;
 import lombok.Builder;
@@ -71,6 +72,9 @@ public class User {
 
     @Column
     private String tempCode;
+
+    @OneToMany(mappedBy = "bulletin", cascade = CascadeType.ALL)
+    private List<Bulletin> bulletinList;
 
     @Builder
     public User(Role role, String email, String password, String name, String picture,
