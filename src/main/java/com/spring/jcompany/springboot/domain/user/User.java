@@ -54,6 +54,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserLevel userLevel;
 
+    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
+    private GroupCompany groupCompany;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Board> boardList;
 

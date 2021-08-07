@@ -1,5 +1,6 @@
 package com.spring.jcompany.springboot.service.bulletin;
 
+import com.spring.jcompany.springboot.domain.bulletin.Bulletin;
 import com.spring.jcompany.springboot.domain.bulletin.BulletinRepository;
 import com.spring.jcompany.springboot.domain.bulletin.BulletinRepositorySupport;
 import com.spring.jcompany.springboot.domain.bulletin.dto.BulletinSaveRequestDto;
@@ -21,5 +22,12 @@ public class BulletinService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         return bulletinRepository.save(requestDto.toEntity(user)).getId();
+    }
+
+    @Transactional
+    public void bulletinDeleteService(Long bulletinId) {
+        Bulletin bulletin = bulletinRepository.findById(bulletinId)
+                .orElseThrow(() -> new IllegalArgumentException("Bulletin Not Found"));
+        bulletinRepository.delete(bulletin);
     }
 }
