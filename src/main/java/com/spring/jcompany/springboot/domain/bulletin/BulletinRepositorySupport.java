@@ -19,6 +19,12 @@ public class BulletinRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
+    public List<Bulletin> findBulletinList() {
+        return queryFactory.selectFrom(bulletin)
+                .orderBy(bulletin.createdDate.desc())
+                .fetch();
+    }
+
     public List<Bulletin> bulletinListOrderByTitle() {
         return queryFactory.selectFrom(bulletin)
                 .orderBy(bulletin.bulletinTitle.desc())

@@ -1,5 +1,6 @@
 package com.spring.jcompany.springboot.batch;
 
+import com.spring.jcompany.springboot.domain.bulletin.Bulletin;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserStatus;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,36 @@ public class SimpleJobConfiguration {
 //                .preventRestart()
                 .start(inactiveJobStep)
                 .build();
+    }
+
+    @Bean
+    public Job bulletinLikeCleanupJob(JobBuilderFactory jobBuilderFactory, Step bulletinLikeCleanupStep) {
+        return jobBuilderFactory.get("bulletinLikeCleanupJob")
+                .start(bulletinLikeCleanupStep)
+                .build();
+    }
+
+    @Bean
+    public Step bulletinLikeCleanupStep(StepBuilderFactory stepBuilderFactory,
+                                        JpaPagingItemReader<Bulletin> bulletinLikeCleanupReader) {
+        return stepBuilderFactory.get("bulletinLikeCleanupStep")
+                .<Bulletin, Bulletin>chunk(10)
+                .reader(bulletinLikeCleanupReader)
+                .processor(bulletinLikeCleanupProcessor())
+                .writer(items -> {})
+                .build();
+    }
+
+    @Bean(destroyMethod = "")
+    @StepScope
+    public JpaPagingItemReader<Bulletin> bulletinLikeCleanupReader() {
+        JpaPagingItemReader<Bulletin> jpaPagingItemReader = new JpaPagingItemReader<>();
+        String sql = "SELECT b FROM Bulletin b " +
+                "ORDER BY b.createdDate DESC";
+        jpaPagingItemReader.setEntityManagerFactory(entityManagerFactory);
+        jpaPagingItemReader.setPageSize(10);
+        jpaPagingItemReader.setQueryString(sql);
+        return jpaPagingItemReader;
     }
 
     @Bean
@@ -78,4 +109,14 @@ public class SimpleJobConfiguration {
         return jpaItemWriter;
     }
 
+    public ItemProcessor<Bulletin, Bulletin> bulletinLikeCleanupProcessor() {
+        return new ItemProcessor<Bulletin, Bulletin>() {
+            @Override
+            public Bulletin process(Bulletin item) throws Exception {
+                return null;
+            }
+        };
+    }
 }
+
+
