@@ -46,26 +46,12 @@ public class SimpleJobConfiguration {
 
     @Bean
     public Step bulletinLikeCleanupStep(StepBuilderFactory stepBuilderFactory,
-                                        JpaPagingItemReader<Bulletin> bulletinLikeCleanupReader) {
+                                        SimpleTasklet simpleTasklet) {
         return stepBuilderFactory.get("bulletinLikeCleanupStep")
-                .<Bulletin, Bulletin>chunk(10)
-                .reader(bulletinLikeCleanupReader)
-                .processor(bulletinLikeCleanupProcessor())
-                .writer(items -> {})
+                .tasklet(simpleTasklet)
                 .build();
     }
 
-    @Bean(destroyMethod = "")
-    @StepScope
-    public JpaPagingItemReader<Bulletin> bulletinLikeCleanupReader() {
-        JpaPagingItemReader<Bulletin> jpaPagingItemReader = new JpaPagingItemReader<>();
-        String sql = "SELECT b FROM Bulletin b " +
-                "ORDER BY b.createdDate DESC";
-        jpaPagingItemReader.setEntityManagerFactory(entityManagerFactory);
-        jpaPagingItemReader.setPageSize(10);
-        jpaPagingItemReader.setQueryString(sql);
-        return jpaPagingItemReader;
-    }
 
     @Bean
     public Step inactiveJobStep(StepBuilderFactory stepBuilderFactory,
@@ -107,15 +93,6 @@ public class SimpleJobConfiguration {
         JpaItemWriter<User> jpaItemWriter = new JpaItemWriter<>();
         jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
         return jpaItemWriter;
-    }
-
-    public ItemProcessor<Bulletin, Bulletin> bulletinLikeCleanupProcessor() {
-        return new ItemProcessor<Bulletin, Bulletin>() {
-            @Override
-            public Bulletin process(Bulletin item) throws Exception {
-                return null;
-            }
-        };
     }
 }
 

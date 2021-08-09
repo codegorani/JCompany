@@ -87,4 +87,9 @@ public class Bulletin extends BaseTimeEntity {
 
         return this;
     }
+
+    public Bulletin setLikeUserList(String likeUserList) {
+        this.likeUserList = likeUserList;
+        return this;
+    }
 }

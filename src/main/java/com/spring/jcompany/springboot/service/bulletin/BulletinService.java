@@ -54,7 +54,7 @@ public class BulletinService {
 
     @Transactional
     public List<BulletinInfoResponseDto> bulletinListResponseDto(Long userId) {
-        List<Bulletin> bulletinList = bulletinRepositorySupport.findBulletinList();
+        List<Bulletin> bulletinList = bulletinRepository.findAll();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         List<BulletinInfoResponseDto> returnList = new ArrayList<>();
@@ -77,7 +77,7 @@ public class BulletinService {
                 .orElseThrow(() -> new IllegalArgumentException("Bulletin Not Found"));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
-        bulletin.likeUp(user);
+        bulletinRepository.save(bulletin.likeUp(user));
     }
 
     @Transactional
@@ -86,6 +86,6 @@ public class BulletinService {
                 .orElseThrow(() -> new IllegalArgumentException("Bulletin Not Found"));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
-        bulletin.likeDown(user);
+        bulletinRepository.save(bulletin.likeDown(user));
     }
 }

@@ -77,7 +77,7 @@ public class User {
     @Column
     private String tempCode;
 
-    @OneToMany(mappedBy = "bulletin", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
     private List<Bulletin> bulletinList;
 
     @Builder
