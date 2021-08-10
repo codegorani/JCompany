@@ -13,6 +13,14 @@ const survey = {
         $('.btn-survey-process').on('click', function() {
             _this.surveyProcess();
         });
+
+        $('#btn-survey-modify').on('click', function() {
+            _this.surveyModify();
+        });
+
+        $('#btn-survey-create').on('click', function() {
+            _this.surveyCreate();
+        })
     },
     surveyProgress: function(type) {
         const dataGroup = $('#data-group');
@@ -81,6 +89,45 @@ const survey = {
             }
         }).fail(function(error) {
             alert(JSON.stringify(error))
+        });
+    },
+    surveyModify: function() {
+        const data = {
+            'surveyName': $('#surveyName').val(),
+            'surveyDetail': $('#surveyDetail').val()
+        };
+        const surveyId = $('#data-group').data('surveyId');
+
+        $.ajax({
+            url: '/survey/manage/' + surveyId,
+            method: 'PUT',
+            contentType: 'text/plain; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('수정이 완료되었습니다.');
+            window.location.href = '/survey/home';
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    surveyCreate: function() {
+        const data = {
+            'surveyName': $('#surveyName').val(),
+            'surveyDetail': $('#surveyDetail').val()
+        };
+
+        $.ajax({
+            url: '/survey/create',
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('등록 성공');
+            window.location.href = '/survey/home';
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
         });
     }
 }

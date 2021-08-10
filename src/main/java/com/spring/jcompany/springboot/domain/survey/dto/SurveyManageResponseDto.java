@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 public class SurveyManageResponseDto {
 
+    private Long id;
     private String surveyName;
     private String surveyDetails;
     private int agreeCount;
@@ -18,6 +19,7 @@ public class SurveyManageResponseDto {
     private List<String> disagreeUserName;
 
     public SurveyManageResponseDto(Survey entity) {
+        this.id = entity.getId();
         this.surveyName = entity.getSurveyName();
         this.surveyDetails = entity.getSurveyDetails();
         this.agreeCount = entity.getAgreeCount();

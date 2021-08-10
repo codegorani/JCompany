@@ -3,7 +3,23 @@
       xmlns:th="http://www.thymeleaf.org">
 <div th:replace="layout/header" th:remove="tag"></div>
 <body>
-
+    <div class="col col-md-12">
+        <div class="col col-md-6">
+            <form>
+                <div class="form-group">
+                    <label for="surveyName">설문제목</label>
+                    <input type="text" id="surveyName" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="surveyDetail">설문내용</label>
+                    <textarea id="surveyDetail" class="form-control"></textarea>
+                </div>
+            </form>
+            <button type="button" class="btn btn-primary" id="btn-survey-create">등록</button>
+            <a th:href="@{/survey/home}" role="button" class="btn btn-secondary">뒤로</a>
+        </div>
+    </div>
 <div th:replace="layout/footer" th:remove="tag"></div>
+<script th:src="@{/js/survey/survey.js}"></script>
 </body>
 </html>

@@ -3,12 +3,24 @@
       xmlns:th="http://www.thymeleaf.org">
 <div th:replace="layout/header" th:remove="tag"></div>
 <body>
-    <h4 th:text="${survey.surveyName}"></h4>
-    <h4 th:text="${survey.surveyDetails}"></h4>
-    <h4 th:text="${survey.agreeCount}"></h4>
-    <h4 th:text="${survey.disagreeCount}"></h4>
-    <h3 th:each="user : ${survey.agreeUserName}" th:text="${user}"></h3>
-    <h3 th:each="user : ${survey.disagreeUserName}" th:text="${user}"></h3>
+    <div class="col col-md-12">
+        <div class="col col-md-6">
+            <form>
+                <div class="form-group">
+                    <label for="surveyName">설문제목</label>
+                    <input type="text" class="form-control" id="surveyName" th:value="${survey.surveyName}"/>
+                </div>
+                <div class="form-group">
+                    <label for="surveyDetail">설문내용</label>
+                    <textarea class="form-control" id="surveyDetail" th:value="${survey.surveyDetails}"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" id="btn-survey-modify">수정</button>
+                <a href="/survey/home" role="button" class="btn btn-secondary">뒤로</a>
+                <input type="hidden" id="data-group" th:data-survey-id="${survey.id}"/>
+            </form>
+        </div>
+    </div>
 <div th:replace="layout/footer" th:remove="tag"></div>
+<script th:src="@{/js/survey/survey.js}"></script>
 </body>
 </html>

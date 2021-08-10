@@ -4,6 +4,7 @@ import com.spring.jcompany.springboot.domain.bulletin.Bulletin;
 import com.spring.jcompany.springboot.domain.bulletin.BulletinRepository;
 import com.spring.jcompany.springboot.domain.bulletin.BulletinRepositorySupport;
 import com.spring.jcompany.springboot.domain.bulletin.dto.BulletinInfoResponseDto;
+import com.spring.jcompany.springboot.domain.bulletin.dto.BulletinListResponseDto;
 import com.spring.jcompany.springboot.domain.bulletin.dto.BulletinSaveRequestDto;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -43,21 +43,26 @@ public class BulletinService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         String[] likeIds = bulletin.getLikeUserList().split(",");
+        BulletinInfoResponseDto responseDto = new BulletinInfoResponseDto(bulletin);
         boolean isLiked = false;
         for (String id : likeIds) {
+            User thatUser = userRepository.findById(Long.parseLong(id))
+                    .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+            responseDto.add(thatUser);
             if (user.getId().equals(Long.parseLong(id))) {
                 isLiked = true;
             }
         }
-        return new BulletinInfoResponseDto(bulletin).setLiked(isLiked);
+        return responseDto.setLiked(isLiked);
+
     }
 
     @Transactional
-    public List<BulletinInfoResponseDto> bulletinListResponseDto(Long userId) {
+    public List<BulletinListResponseDto> bulletinListResponseDto(Long userId) {
         List<Bulletin> bulletinList = bulletinRepository.findAll();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
-        List<BulletinInfoResponseDto> returnList = new ArrayList<>();
+        List<BulletinListResponseDto> returnList = new ArrayList<>();
         for (Bulletin bulletin : bulletinList) {
             String[] likeIds = bulletin.getLikeUserList().split(",");
             boolean isLiked = false;
@@ -66,7 +71,7 @@ public class BulletinService {
                     isLiked = true;
                 }
             }
-            returnList.add(new BulletinInfoResponseDto(bulletin).setLiked(isLiked));
+            returnList.add(new BulletinListResponseDto(bulletin).setLiked(isLiked));
         }
         return returnList;
     }

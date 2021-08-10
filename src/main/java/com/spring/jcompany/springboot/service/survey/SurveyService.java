@@ -4,10 +4,7 @@ import com.spring.jcompany.springboot.domain.survey.Survey;
 import com.spring.jcompany.springboot.domain.survey.SurveyRepository;
 import com.spring.jcompany.springboot.domain.survey.SurveyRepositorySupport;
 import com.spring.jcompany.springboot.domain.survey.SurveyStatus;
-import com.spring.jcompany.springboot.domain.survey.dto.SurveyListResponseDto;
-import com.spring.jcompany.springboot.domain.survey.dto.SurveyManageResponseDto;
-import com.spring.jcompany.springboot.domain.survey.dto.SurveyResponseDto;
-import com.spring.jcompany.springboot.domain.survey.dto.SurveySaveRequestDto;
+import com.spring.jcompany.springboot.domain.survey.dto.*;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -105,5 +102,12 @@ public class SurveyService {
         }
 
         return responseDto;
+    }
+
+    @Transactional
+    public void surveyModifyService(SurveyModifyRequestDto requestDto, Long surveyId) {
+        Survey survey = surveyRepository.findById(surveyId)
+                .orElseThrow(() -> new IllegalArgumentException("Survey Not Found"));
+        surveyRepository.save(survey.surveyModifyWithDto(requestDto));
     }
 }

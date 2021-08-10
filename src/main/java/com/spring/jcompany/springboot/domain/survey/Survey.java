@@ -1,6 +1,7 @@
 package com.spring.jcompany.springboot.domain.survey;
 
 import com.spring.jcompany.springboot.domain.global.BaseTimeEntity;
+import com.spring.jcompany.springboot.domain.survey.dto.SurveyModifyRequestDto;
 import com.spring.jcompany.springboot.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -97,6 +98,12 @@ public class Survey extends BaseTimeEntity {
 
     public Survey setDraftee(User draftee) {
         this.draftee = draftee;
+        return this;
+    }
+
+    public Survey surveyModifyWithDto(SurveyModifyRequestDto requestDto) {
+        this.surveyName = requestDto.getSurveyName();
+        this.surveyDetails = requestDto.getSurveyDetail();
         return this;
     }
 }

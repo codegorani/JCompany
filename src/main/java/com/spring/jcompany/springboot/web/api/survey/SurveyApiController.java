@@ -2,6 +2,7 @@ package com.spring.jcompany.springboot.web.api.survey;
 
 import com.spring.jcompany.springboot.config.auth.LoginUser;
 import com.spring.jcompany.springboot.domain.survey.SurveyStatus;
+import com.spring.jcompany.springboot.domain.survey.dto.SurveyModifyRequestDto;
 import com.spring.jcompany.springboot.domain.survey.dto.SurveyProgressRequestDto;
 import com.spring.jcompany.springboot.domain.survey.dto.SurveySaveRequestDto;
 import com.spring.jcompany.springboot.domain.user.dto.SessionUser;
@@ -42,6 +43,11 @@ public class SurveyApiController {
     @DeleteMapping("/survey/{id}")
     public void surveyDeleteControl(@PathVariable("id") Long surveyId) {
         surveyService.surveyDeleteService(surveyId);
+    }
+
+    @PutMapping("/survey/manage/{id}")
+    public void surveyModifyControl(@RequestBody SurveyModifyRequestDto requestDto, @PathVariable("id") Long surveyId) {
+        surveyService.surveyModifyService(requestDto, surveyId);
     }
 
 }
