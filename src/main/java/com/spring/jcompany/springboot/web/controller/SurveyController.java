@@ -41,11 +41,4 @@ public class SurveyController {
         model.addAttribute("survey", surveyService.surveyManageResponseService(surveyId));
         return "menu/survey/survey-management";
     }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_DEVELOPER')")
-    @GetMapping("/survey/create")
-    public String surveyCreatePage(@LoginUser SessionUser user, Model model) {
-        model.addAttribute("loginUser", user);
-        return "menu/survey/survey-create";
-    }
 }
