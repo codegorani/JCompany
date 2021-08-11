@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
-public class SimpleTasklet implements Tasklet, StepExecutionListener {
+public class BulletinTasklet implements Tasklet, StepExecutionListener {
 
     private final UserRepository userRepository;
     private final BulletinRepository bulletinRepository;
@@ -36,21 +36,23 @@ public class SimpleTasklet implements Tasklet, StepExecutionListener {
         List<Bulletin> newData = new ArrayList<>();
         List<Long> userIds = userList.stream().map(User::getId).collect(Collectors.toList());
         for (Bulletin bulletin : bulletinList) {
-            List<Long> likeUserList = Arrays.stream(bulletin.getLikeUserList().split(",")).map(Long::parseLong).collect(Collectors.toList());
+            if (!bulletin.getLikeUserList().equals("") && bulletin.getLikeUserList() != null) {
+                List<Long> likeUserList = Arrays.stream(bulletin.getLikeUserList().split(",")).map(Long::parseLong).collect(Collectors.toList());
 
-            likeUserList.removeIf(id -> !userIds.contains(id));
+                likeUserList.removeIf(id -> !userIds.contains(id));
 
-            StringBuilder newUserList = new StringBuilder();
+                StringBuilder newUserList = new StringBuilder();
 
-            for (Long id : likeUserList) {
-                if (newUserList.toString().equals("")) {
-                    newUserList.append(id);
-                } else {
-                    newUserList.append(",").append(id);
+                for (Long id : likeUserList) {
+                    if (newUserList.toString().equals("")) {
+                        newUserList.append(id);
+                    } else {
+                        newUserList.append(",").append(id);
+                    }
                 }
-            }
 
-            newData.add(bulletin.setLikeUserList(newUserList.toString()));
+                newData.add(bulletin.setLikeUserList(newUserList.toString()));
+            }
         }
 
         bulletinRepository.saveAll(newData);

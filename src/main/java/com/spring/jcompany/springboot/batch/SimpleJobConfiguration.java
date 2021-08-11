@@ -1,6 +1,5 @@
 package com.spring.jcompany.springboot.batch;
 
-import com.spring.jcompany.springboot.domain.bulletin.Bulletin;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserStatus;
 import lombok.RequiredArgsConstructor;
@@ -45,10 +44,25 @@ public class SimpleJobConfiguration {
     }
 
     @Bean
+    public Job surveyUserCleanupJob(JobBuilderFactory jobBuilderFactory, Step surveyUserCleanupStep) {
+        return jobBuilderFactory.get("surveyUserCleanupJob")
+                .start(surveyUserCleanupStep)
+                .build();
+    }
+
+    @Bean
+    public Step surveyUserCleanupStep(StepBuilderFactory stepBuilderFactory,
+                                      SurveyTasklet surveyTasklet) {
+        return stepBuilderFactory.get("surveyUserCleanupStep")
+                .tasklet(surveyTasklet)
+                .build();
+    }
+
+    @Bean
     public Step bulletinLikeCleanupStep(StepBuilderFactory stepBuilderFactory,
-                                        SimpleTasklet simpleTasklet) {
+                                        BulletinTasklet bulletinTasklet) {
         return stepBuilderFactory.get("bulletinLikeCleanupStep")
-                .tasklet(simpleTasklet)
+                .tasklet(bulletinTasklet)
                 .build();
     }
 

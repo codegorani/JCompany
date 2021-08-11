@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -104,6 +105,57 @@ public class Survey extends BaseTimeEntity {
     public Survey surveyModifyWithDto(SurveyModifyRequestDto requestDto) {
         this.surveyName = requestDto.getSurveyName();
         this.surveyDetails = requestDto.getSurveyDetail();
+        return this;
+    }
+
+    public void agreeUserRemoved() {
+        this.agreeCount--;
+    }
+
+    public void disagreeUserRemoved() {
+        this.disagreeCount--;
+    }
+
+    public Survey setAgreeUserId(List<Long> ids) {
+        StringBuilder newUserList = new StringBuilder();
+
+        for (Long id : ids) {
+            if (newUserList.toString().equals("")) {
+                newUserList.append(id);
+            } else {
+                newUserList.append(",").append(id);
+            }
+        }
+
+        this.agreeUsersId = newUserList.toString();
+        return this;
+    }
+
+    public Survey setDisagreeUserId(List<Long> ids) {
+        StringBuilder newUserList = new StringBuilder();
+
+        for (Long id : ids) {
+            if (newUserList.toString().equals("")) {
+                newUserList.append(id);
+            } else {
+                newUserList.append(",").append(id);
+            }
+        }
+
+        this.disagreeUsersId = newUserList.toString();
+        return this;
+    }
+
+    public Survey setTotalUserId(List<Long> ids) {
+        StringBuilder newUserList = new StringBuilder();
+        for (Long id : ids) {
+            if (newUserList.toString().equals("")) {
+                newUserList.append(id);
+            } else {
+                newUserList.append(",").append(id);
+            }
+        }
+        this.totalUserId = newUserList.toString();
         return this;
     }
 }

@@ -101,7 +101,7 @@ const survey = {
         $.ajax({
             url: '/survey/manage/' + surveyId,
             method: 'PUT',
-            contentType: 'text/plain; charset=utf-8',
+            contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify(data)
         }).done(function() {
