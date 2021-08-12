@@ -29,7 +29,7 @@ public class Survey extends BaseTimeEntity {
     @Column
     private String surveyName;
 
-    @Column
+    @Column(length = 1000)
     private String surveyDetails;
 
     @Column

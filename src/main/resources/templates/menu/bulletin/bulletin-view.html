@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/header" th:remove="tag"></div>
+<body>
+    <div class="col col-md-12">
+        <div class="col col-md-6">
+            <h1 th:text="${bulletin.bulletinTitle}"></h1>
+        </div>
+    </div>
+<div th:replace="layout/footer" th:remove="tag"></div>
+</body>
+</html>

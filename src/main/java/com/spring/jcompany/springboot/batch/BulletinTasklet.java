@@ -61,12 +61,14 @@ public class BulletinTasklet implements Tasklet, StepExecutionListener {
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
+        System.out.println(stepExecution.getId());
         bulletinList = bulletinRepository.findAll();
         userList = userRepository.findAll();
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
+        System.out.println(stepExecution.getId());
         return ExitStatus.COMPLETED;
     }
 }
