@@ -16,7 +16,8 @@ public class BulletinController {
     private final BulletinService bulletinService;
 
     @GetMapping("/bulletin/home")
-    public String toBulletinHome() {
+    public String toBulletinHome(Model model, @LoginUser SessionUser user) {
+        model.addAttribute("bulletinList", bulletinService.bulletinListResponseDto(user.getId()));
         return "menu/bulletin/bulletin-home";
     }
 

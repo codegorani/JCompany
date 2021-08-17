@@ -1,5 +1,6 @@
 package com.spring.jcompany.springboot.domain.bulletin;
 
+import com.spring.jcompany.springboot.domain.bulletin.dto.BulletinUpdateRequestDto;
 import com.spring.jcompany.springboot.domain.global.BaseTimeEntity;
 import com.spring.jcompany.springboot.domain.user.User;
 import lombok.Builder;
@@ -7,7 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
@@ -53,7 +57,6 @@ public class Bulletin extends BaseTimeEntity {
     }
 
     public Bulletin likeUp(User user) {
-        this.likeCount += 1;
         if (this.likeUserList.equals("")) {
             this.likeUserList += user.getId();
         } else {
@@ -65,31 +68,38 @@ public class Bulletin extends BaseTimeEntity {
             }
             this.likeUserList += "," + user.getId();
         }
-
+        this.likeCount += 1;
         return this;
     }
 
     public Bulletin likeDown(User user) {
-        this.likeCount -= 1;
-        String[] userList = this.likeUserList.split(",");
+        List<Long> userList = Arrays.stream(this.likeUserList.split(",")).map(Long::parseLong)
+                .collect(Collectors.toList());
         StringBuilder result = new StringBuilder();
 
-        for(String ids : userList) {
-            if (!ids.equals(String.valueOf(user.getId()))) {
-                if (result.toString().equals("")) {
-                    result.append(ids);
-                } else {
-                    result.append(",").append(user.getId());
-                }
+        userList.remove(user.getId());
+        for(Long ids : userList) {
+            if (result.toString().equals("")) {
+                result.append(ids);
+            } else {
+                result.append(",").append(user.getId());
             }
         }
         this.likeUserList = result.toString();
-
+        this.likeCount -= 1;
         return this;
     }
 
     public Bulletin setLikeUserList(String likeUserList) {
         this.likeUserList = likeUserList;
+        return this;
+    }
+
+    public Bulletin bulletinUpdateByDto(BulletinUpdateRequestDto requestDto) {
+        this.bulletinTitle = requestDto.getBulletinTitle();
+        this.bulletinContent = requestDto.getBulletinContent();
+        this.attachmentFilePath = requestDto.getAttachmentFilePath();
+        this.bulletinCategory = requestDto.getBulletinCategory();
         return this;
     }
 }

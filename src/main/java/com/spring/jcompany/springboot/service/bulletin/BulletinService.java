@@ -6,6 +6,7 @@ import com.spring.jcompany.springboot.domain.bulletin.BulletinRepositorySupport;
 import com.spring.jcompany.springboot.domain.bulletin.dto.BulletinInfoResponseDto;
 import com.spring.jcompany.springboot.domain.bulletin.dto.BulletinListResponseDto;
 import com.spring.jcompany.springboot.domain.bulletin.dto.BulletinSaveRequestDto;
+import com.spring.jcompany.springboot.domain.bulletin.dto.BulletinUpdateRequestDto;
 import com.spring.jcompany.springboot.domain.user.User;
 import com.spring.jcompany.springboot.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -76,21 +79,49 @@ public class BulletinService {
         return returnList;
     }
 
+//    @Transactional
+//    public void bulletinLikeCountUpService(Long userId, Long bulletinId) {
+//        Bulletin bulletin = bulletinRepository.findById(bulletinId)
+//                .orElseThrow(() -> new IllegalArgumentException("Bulletin Not Found"));
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+//        bulletinRepository.save(bulletin.likeUp(user));
+//    }
+//
+//    @Transactional
+//    public void bulletinLikeCountDownService(Long userId, Long bulletinId) {
+//        Bulletin bulletin = bulletinRepository.findById(bulletinId)
+//                .orElseThrow(() -> new IllegalArgumentException("Bulletin Not Found"));
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+//
+//    }
+
     @Transactional
-    public void bulletinLikeCountUpService(Long userId, Long bulletinId) {
+    public Long bulletinUpdateService(BulletinUpdateRequestDto requestDto, Long bulletinId) {
         Bulletin bulletin = bulletinRepository.findById(bulletinId)
-                .orElseThrow(() -> new IllegalArgumentException("Bulletin Not Found"));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
-        bulletinRepository.save(bulletin.likeUp(user));
+                .orElseThrow(IllegalArgumentException::new);
+        return bulletinRepository.save(bulletin.bulletinUpdateByDto(requestDto)).getId();
     }
 
     @Transactional
-    public void bulletinLikeCountDownService(Long userId, Long bulletinId) {
+    public void bulletinLikeProcessService(Long bulletinId, Long userId) {
         Bulletin bulletin = bulletinRepository.findById(bulletinId)
-                .orElseThrow(() -> new IllegalArgumentException("Bulletin Not Found"));
+                .orElseThrow(IllegalArgumentException::new);
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
-        bulletinRepository.save(bulletin.likeDown(user));
+                .orElseThrow(IllegalArgumentException::new);
+        List<Long> bulletinLikeUserList = Arrays.stream(bulletin.getLikeUserList().split(","))
+                .map(Long::parseLong).collect(Collectors.toList());
+        boolean isLiked = false;
+        for (Long id : bulletinLikeUserList) {
+            if (id.equals(user.getId())) {
+                isLiked = true;
+            }
+        }
+        if (isLiked) {
+            bulletinRepository.save(bulletin.likeUp(user));
+        } else {
+            bulletinRepository.save(bulletin.likeUp(user));
+        }
     }
 }
