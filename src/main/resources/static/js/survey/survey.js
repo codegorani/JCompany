@@ -114,7 +114,7 @@ const survey = {
     surveyCreate: function() {
         const data = {
             'surveyName': $('#surveyName').val(),
-            'surveyDetail': $('#surveyDetail').val()
+            'surveyDetails': $('#surveyDetails').val()
         };
 
         $.ajax({

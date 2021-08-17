@@ -3,7 +3,29 @@
       xmlns:th="http://www.thymeleaf.org">
 <div th:replace="layout/header" th:remove="tag"></div>
 <body>
-
+    <div class="col col-md-12">
+        <div class="col col-md-6">
+            <table class="table table-border table-horizontal">
+                <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>좋아요</th>
+                    <th>등록자</th>
+                    <th>등록일자</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="bulletin : ${bulletinList}">
+                    <td th:text="${bulletin.bulletinTitle}"></td>
+                    <td th:if="${bulletin.liked == true}" th:text="'❤' + ${bulletin.likeCount}"></td>
+                    <td th:if="${bulletin.liked == false}" th:text="'🤍' + ${bulletin.likeCount}"></td>
+                    <td th:text="${bulletin.writer.userTeam} + ' ' + ${bulletin.writer.name} + ${bulletin.writer.userLevel}"></td>
+                    <td th:text="${bulletin.createdDate}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 <div th:replace="layout/footer" th:remove="tag"></div>
 </body>
 </html>

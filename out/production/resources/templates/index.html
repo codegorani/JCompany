@@ -14,6 +14,7 @@
     <a th:if="${loginUser != null} and ${loginUser.role.key} eq 'ROLE_USER_MANAGER'"
         role="button" class="btn btn-danger" th:href="@{/manager}">팀 관리</a>
     <a th:if="${loginUser != null}" th:href="@{/mail}" role="button" class="btn btn-dark">메일전송</a>
+    <a th:if="${loginUser != null}" th:href="@{/survey/home}" role="button" class="btn btn-primary">설문</a>
     <div th:if="${loginUser != null}">
         <h4 th:text="${loginUser.userTeam.team} +' '+ ${loginUser.name} +' '+ ${loginUser.userLevel.title} + '님 반갑습니다.'"></h4>
     </div>
